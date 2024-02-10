@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "test",
-    "slug": "test",
+    "name": "LiveUta",
+    "slug": "liveuta-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a48b8f00-b680-46c2-bd69-8cfa7f84fa13"
+      }
+    },
+    "owner": "yiminwook"
   }
 }
