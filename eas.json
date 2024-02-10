@@ -4,12 +4,11 @@
   },
   "build": {
     "base": {
-      "java": "11",
       "node": "18.19.0",
       "yarn": "1.22.19",
       "android": {
         "distribution": "internal",
-        "image": "default",
+        "image": "latest",
         "buildType": "apk"
       }
     },
