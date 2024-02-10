@@ -1,4 +1,4 @@
-import Main from "./src/app/Main";
+import Main from '@/app/Main';
 
 export default function App() {
   return <Main />;

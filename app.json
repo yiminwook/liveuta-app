@@ -1,4 +1,5 @@
 {
+  "owner": "yiminwook",
   "expo": {
     "name": "LiveUta",
     "slug": "liveuta-app",
@@ -29,6 +30,8 @@
         "projectId": "a48b8f00-b680-46c2-bd69-8cfa7f84fa13"
       }
     },
-    "owner": "yiminwook"
+    "experiments": {
+      "tsconfigPaths": false
+    }
   }
 }
