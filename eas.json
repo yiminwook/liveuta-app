@@ -3,20 +3,23 @@
     "version": ">= 7.1.3"
   },
   "build": {
+    "base": {
+      "node": "18.19.0",
+      "yarn": "1.22.19",
+      "android": {
+        "distribution": "internal",
+        "image": "default",
+        "buildType": "apk"
+      }
+    },
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
-    },
-    "preview": {
-      "distribution": "internal"
+      "extends": "base",
+      "android": {}
     },
     "production": {
-      "android": {
-        "buildType": "apk"
-      }
+      "extends": "base",
+      "android": {}
     }
   },
   "submit": {
