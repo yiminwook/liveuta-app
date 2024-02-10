@@ -1,5 +1,5 @@
-import Main from '@/app/Main';
+import RootLayout from '@/app/layout';
 
 export default function App() {
-  return <Main />;
+  return <RootLayout />;
 }
