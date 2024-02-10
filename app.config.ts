@@ -22,6 +22,7 @@ const config: ExpoConfig = {
     supportsTablet: true,
   },
   android: {
+    package: 'com.project.liveuta.app',
     adaptiveIcon: {
       foregroundImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
