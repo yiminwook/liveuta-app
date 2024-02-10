@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 7.1.3"
+  },
+  "build": {
+    "base": {
+      "node": "18.19.0",
+      "yarn": "1.22.19",
+      "android": {
+        "distribution": "internal",
+        "image": "latest",
+        "buildType": "apk"
+      }
+    },
+    "development": {
+      "developmentClient": true,
+      "extends": "base",
+      "android": {}
+    },
+    "production": {
+      "extends": "base",
+      "android": {}
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
