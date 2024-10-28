@@ -1,4 +1,3 @@
-import 'ts-node/register'; // Add this to import TypeScript files
 import { ExpoConfig } from 'expo/config';
 
 // In SDK 46 and lower, use the following import instead:
@@ -9,35 +8,38 @@ const config: ExpoConfig = {
   name: 'LiveUta',
   slug: 'liveuta-app',
   version: '1.0.0',
+  scheme: 'myapp',
   orientation: 'portrait',
-  icon: './src/assets/icon.png',
+  icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
   splash: {
-    image: './src/assets/splash2.png',
+    image: './src/assets/images/splash2.png',
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
-  assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
+    bundleIdentifier: 'com.project.liveuta.app',
   },
   android: {
-    package: 'com.project.liveuta.app',
     adaptiveIcon: {
-      foregroundImage: './src/assets/adaptive-icon.png',
+      foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
+    package: 'com.project.liveuta.app',
   },
   web: {
-    favicon: './src/assets/favicon.png',
+    bundler: 'metro',
+    output: 'static',
+    favicon: './src/assets/images/favicon.png',
+  },
+  experiments: {
+    typedRoutes: true,
   },
   extra: {
     eas: {
       projectId: 'a48b8f00-b680-46c2-bd69-8cfa7f84fa13',
     },
-  },
-  experiments: {
-    tsconfigPaths: true,
   },
 };
 

@@ -1,14 +1,9 @@
-import { AppTabParamList } from '@/type/navigation';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import image from '@/assets/icon-512-512.png';
+import image from '@/assets/images/icon-512-512.png';
 
-type ScreenProps = NativeStackScreenProps<AppTabParamList, 'home'>;
-export default function HomeScreen({ navigation }: ScreenProps) {
-  const handlePress = () => {
-    navigation.navigate('live');
-  };
+export default function HomeScreen() {
+  const handlePress = () => {};
 
   return (
     <SafeAreaView>

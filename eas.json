@@ -1,13 +1,14 @@
 {
   "cli": {
-    "version": ">= 7.1.3"
+    "version": ">= 12.6.1",
+    "appVersionSource": "remote"
   },
   "build": {
     "base": {
-      "node": "18.19.0",
+      "node": "20.14.0",
       "yarn": "1.22.19",
+      "distribution": "internal",
       "android": {
-        "distribution": "internal",
         "image": "latest",
         "buildType": "apk"
       }
