@@ -11,7 +11,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "android:build": "eas build -p android --profile preview"
+    "android:build": "eas build -p android --profile preview",
+    "local:build": "eas build --local --profile preview"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -21,7 +22,7 @@
     "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
-    "expo-splash-screen": "~0.27.5",
+    "expo-splash-screen": "0.27.5",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
