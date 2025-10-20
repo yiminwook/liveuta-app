@@ -41,3 +41,11 @@ app-example
 # generated native folders
 /ios
 /android
+*.apk
+*.aab
+# local env files
+.env
+.env*.local
+
+/google-services.json
+
