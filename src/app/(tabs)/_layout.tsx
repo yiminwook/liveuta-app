@@ -1,37 +1,54 @@
+import { HapticTab } from "@/components/haptic-tab";
+import { COLORS } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-
+// popToTopOnBlur true;  탭 이동시 기존 화면이 유지되지 않게함.
+// animation none; 탭 이동시 애니메이션 제거
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
     <Tabs
+      initialRouteName="schedule"
+      backBehavior="history"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        animation: "shift",
+        tabBarActiveTintColor: COLORS[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarButton: HapticTab,
       }}
     >
+      <Tabs.Screen name="index" options={{ href: null }} />
+
       <Tabs.Screen
-        name="index"
+        name="schedule"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          title: "스케쥴",
+          popToTopOnBlur: true,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "calendar" : "calendar-outline"}
+              size={20}
+              color={color}
+            />
           ),
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+        name="channel"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+          title: "채널",
+          popToTopOnBlur: true,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "tv" : "tv-outline"}
+              size={20}
+              color={color}
+            />
           ),
         }}
       />
