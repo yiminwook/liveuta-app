@@ -1,41 +1,44 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
 const PROD_VAL = {
-  name: "라이브우타",
+  name: "Live Uta",
   scheme: "com.utawaku.liveuta",
   bundleIdentifier: "com.utawaku.liveuta", // IOS
   package: "com.utawaku.liveuta", // Android
   assets: {
-    icon: "./src/assets/images/icon-light.png",
+    iosLightIcon: "./src/assets/images/ios-icon-light.png",
+    iosDarkIcon: "./src/assets/images/ios-icon-dark.png",
+    adaptiveIcon: "./src/assets/images/adaptive-icon.png",
     splash: "./src/assets/images/splash-icon.png",
     splashWidth: 200,
-    adaptiveIcon: "./src/assets/images/adaptive-icon-light.png",
   },
 };
 
 const PREVIEW_VAL = {
-  name: "라이브우타 PRE",
+  name: "Live Uta PRE",
   scheme: "com.utawaku.liveuta.preview",
   bundleIdentifier: "com.utawaku.liveuta.preview", // IOS
   package: "com.utawaku.liveuta.preview", // Android
   assets: {
-    icon: "./src/assets/images/icon-light.png",
+    iosLightIcon: "./src/assets/images/ios-icon-light.png",
+    iosDarkIcon: "./src/assets/images/ios-icon-dark.png",
+    adaptiveIcon: "./src/assets/images/adaptive-icon.png",
     splash: "./src/assets/images/splash-icon.png",
     splashWidth: 200,
-    adaptiveIcon: "./src/assets/images/adaptive-icon-light.png",
   },
 } satisfies typeof PROD_VAL;
 
 const DEV_VAL = {
-  name: "라이브우타 DEV",
+  name: "Live Uta DEV",
   scheme: "com.utawaku.liveuta.development",
   bundleIdentifier: "com.utawaku.liveuta.development", // IOS
   package: "com.utawaku.liveuta.development", // Android
   assets: {
-    icon: "./src/assets/images/icon-light.png",
+    iosLightIcon: "./src/assets/images/ios-icon-light.png",
+    iosDarkIcon: "./src/assets/images/ios-icon-dark.png",
+    adaptiveIcon: "./src/assets/images/adaptive-icon.png",
     splash: "./src/assets/images/splash-icon.png",
     splashWidth: 200,
-    adaptiveIcon: "./src/assets/images/adaptive-icon-light.png",
   },
 } satisfies typeof PROD_VAL;
 
@@ -67,24 +70,28 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
     newArchEnabled: true,
     name: val.name,
     scheme: val.scheme,
-    icon: val.assets.icon,
+    icon: val.assets.iosLightIcon,
     updates: { url: "https://u.expo.dev/549a663a-be2d-4e39-82a9-acb5bcd4495a" },
     runtimeVersion: { policy: "appVersion" },
     ios: {
       supportsTablet: true,
       bundleIdentifier: val.bundleIdentifier,
-      infoPlist: {},
+      infoPlist: {
+        ITSAppUsesNonExemptEncryption: false,
+      },
+      icon: {
+        light: val.assets.iosLightIcon,
+        dark: val.assets.iosDarkIcon,
+      },
     },
     android: {
       adaptiveIcon: {
-        backgroundColor: "#E6F4FE",
-        foregroundImage: "./src/assets/images/android-icon-foreground.png",
-        backgroundImage: "./src/assets/images/android-icon-background.png",
-        monochromeImage: "./src/assets/images/android-icon-monochrome.png",
+        foregroundImage: val.assets.adaptiveIcon,
+        backgroundColor: "#f2b4bf",
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
-      package: "com.utawaku.liveuta",
+      package: val.package,
       googleServicesFile: "./google-services.json",
     },
     plugins: [
@@ -96,9 +103,9 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
           image: val.assets.splash,
           imageWidth: val.assets.splashWidth,
           resizeMode: "contain",
-          backgroundColor: "#ffffff",
+          backgroundColor: "#f2b4bf",
           dark: {
-            backgroundColor: "#000000",
+            backgroundColor: "#6a5f71",
           },
         },
       ],
@@ -112,8 +119,6 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
         "expo-secure-store",
         {
           configureAndroidBackup: true,
-          faceIDPermission:
-            "Allow $(PRODUCT_NAME) to access your Face ID biometric data.",
         },
       ],
     ],
