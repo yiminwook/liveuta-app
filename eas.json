@@ -27,7 +27,11 @@
   "submit": {
     "production": {
       "android": {
-        "releaseStatus": "draft"
+        "releaseStatus": "draft",
+        "applicationId": "com.utawaku.liveuta"
+      },
+      "ios": {
+        "bundleIdentifier": "com.utawaku.liveuta"
       }
     }
   }
