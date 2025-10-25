@@ -1,4 +1,5 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
+import { withSentry } from "@sentry/react-native/expo";
 
 const PROD_VAL = {
   name: "Live Uta",
@@ -62,6 +63,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...config,
+    platforms: ["ios", "android"],
     owner: "utawaku",
     slug: "liveuta", // EXPO 프로젝트 이름
     version: "1.0.0",
@@ -71,7 +73,9 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
     name: val.name,
     scheme: val.scheme,
     icon: val.assets.iosLightIcon,
-    updates: { url: "https://u.expo.dev/549a663a-be2d-4e39-82a9-acb5bcd4495a" },
+    updates: {
+      url: "https://u.expo.dev/549a663a-be2d-4e39-82a9-acb5bcd4495a",
+    },
     runtimeVersion: { policy: "appVersion" },
     ios: {
       supportsTablet: true,
@@ -97,14 +101,6 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
     plugins: [
       "expo-router",
       "expo-font",
-      [
-        "@sentry/react-native/expo",
-        {
-          url: "https://sentry.io/",
-          project: "liveuta-app",
-          organization: "yisp",
-        },
-      ],
       [
         "expo-localization",
         {

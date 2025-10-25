@@ -44,8 +44,8 @@ app-example
 /android
 *.apk
 *.aab
+*.ipa
 
 /google-services.json
-
 
 .env.local
