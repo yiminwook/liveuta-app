@@ -6,7 +6,8 @@
 
 ### 필요한 것
 
-[node.js](https://nodejs.org) v24
+[node.js](https://nodejs.org) v22.14
+[pnpm](https://pnpm.io/ko/installation) v9.5
 
 Android
 
@@ -30,5 +31,5 @@ pnpm i
 ### 개발 시작
 
 ```sh
-pnpm run {android|ios}
+pnpm {android|ios}
 ```
