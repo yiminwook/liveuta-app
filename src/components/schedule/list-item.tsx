@@ -1,6 +1,14 @@
 import { generateThumbnail, generateVideoUrl } from "@/libraries/youtube/url";
 import { TParsedClientContent } from "@/types/mongodb";
-import { Image, StyleSheet, Text, useColorScheme, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
+import * as Linking from "expo-linking";
 
 type Props = {
   item: TParsedClientContent;
@@ -18,13 +26,13 @@ export default function ListItem({ item }: Props) {
         colorScheme === "light" ? styles.containerLight : styles.containerDark,
       ]}
     >
-      <View>
+      <Pressable onPress={() => Linking.openURL(videoUrl)}>
         <Image
           source={{ uri: thumbnailUrl }}
           style={styles.thumbnail}
           alt="방송 썸네일"
         />
-      </View>
+      </Pressable>
       <View>
         <Text>{item.title}</Text>
       </View>
@@ -40,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   containerDark: {
-    backgroundColor: "#151718",
+    backgroundColor: "#fff",
   },
   thumbnail: {
     width: 100,

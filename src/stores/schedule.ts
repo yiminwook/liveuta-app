@@ -7,9 +7,10 @@ import { createJSONStorage, persist } from "zustand/middleware";
 export const REFRESH_INTERVAL = [3, 5, 10, 15, 30, 60] as const;
 
 export type TScheduleState = {
-  isActive: boolean;
+  isUserCacheActive: boolean;
   refreshInterval: number;
   select: TScheduleSelect;
+  lastTabPage: number;
 };
 
 export type TScheduleAction = {
@@ -18,6 +19,7 @@ export type TScheduleAction = {
     refreshInterval: (typeof REFRESH_INTERVAL)[number]
   ) => void;
   setSelect: (select: TScheduleSelect) => void;
+  setLastTabPage: (lastTabPage: number) => void;
 };
 
 export type TScheduleStore = TScheduleState & { actions: TScheduleAction };
@@ -25,13 +27,15 @@ export type TScheduleStore = TScheduleState & { actions: TScheduleAction };
 export const useScheduleStore = create<TScheduleStore>()(
   persist(
     (set) => ({
-      isActive: true,
+      isUserCacheActive: true,
       refreshInterval: 3,
       select: "all",
+      lastTabPage: 0,
       actions: {
-        setIsActive: (isActive) => set({ isActive }),
+        setIsActive: (isUserCacheActive) => set({ isUserCacheActive }),
         setRefreshInterval: (refreshInterval) => set({ refreshInterval }),
         setSelect: (select) => set({ select }),
+        setLastTabPage: (lastTabPage: number) => set({ lastTabPage }),
       },
     }),
     {
@@ -39,9 +43,10 @@ export const useScheduleStore = create<TScheduleStore>()(
       storage: createJSONStorage(() => AsyncStorage),
       version: 1,
       partialize: (state) => ({
-        isActive: state.isActive,
+        isActive: state.isUserCacheActive,
         refreshInterval: state.refreshInterval,
         select: state.select,
+        lastTabPage: state.lastTabPage,
       }),
     }
   )

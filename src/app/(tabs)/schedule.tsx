@@ -1,105 +1,72 @@
-import ScheduleHome from "@/components/schedule/home";
+import ScheduleList from "@/components/schedule/list";
 import SearchNav from "@/components/schedule/search-nav";
 import SearchModal from "@/components/schedule/search-modal";
 import SegmentControl from "@/components/schedule/segment-control";
 import { SHEET_COLOR } from "@/constants/theme";
 import useCachedData from "@/hooks/api/use-cached-data";
-import { useScheduleQuery } from "@/hooks/api/use-schedule";
+import {
+  useProceedScheduleData,
+  useScheduleQuery,
+} from "@/hooks/api/use-schedule";
 import { useScheduleStore } from "@/stores/schedule";
 import { StreamFilter } from "@/types";
-import { addEscapeCharacter } from "@/utils/regexp";
-import { useMemo, useState } from "react";
-import { ActivityIndicator, Button, StyleSheet } from "react-native";
+import { useMemo, useRef, useState } from "react";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PagerView from "react-native-pager-view";
+import { DirectEventHandler } from "react-native/Libraries/Types/CodegenTypes";
+import { OnPageSelectedEventData } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent";
 
 export default function ScheduleScreen() {
-  const [filter, setFilter] = useState<StreamFilter>(StreamFilter.scheduled);
   const [channelQuery, setChannelQuery] = useState("");
   const [isShowSearchModal, setIsShowSearchModal] = useState(false);
 
-  const select = useScheduleStore((state) => state.select);
+  const pageViewRef = useRef<PagerView>(null);
 
-  const schedule = useScheduleQuery({ filter, enableAutoSync: true });
-  const cache = useCachedData({
-    session: null,
+  const schedule = useScheduleQuery({ enableAutoSync: true });
+  const cache = useCachedData({ session: null });
+  const scheduleStore = useScheduleStore();
+
+  const proceedScheduleData = useProceedScheduleData({
+    cache,
+    scheduleRawData: schedule.data || [],
+    channelQuery,
+    select: scheduleStore.select,
   });
 
-  const onChangeFilter = (filter: StreamFilter) => setFilter(() => filter);
   const onChangeQuery = (query: string) => setChannelQuery(() => query);
 
   const openSearchModal = () => setIsShowSearchModal(() => true);
   const closeSearchModal = () => setIsShowSearchModal(() => false);
 
-  const proceedScheduleData = useMemo(() => {
-    if (!schedule.data) {
-      return {
-        content: [],
-        length: {
-          all: 0,
-          stream: 0,
-          video: 0,
-        },
-      };
+  const movePage = (position: number) => {
+    pageViewRef.current?.setPage(position);
+  };
+
+  const onPageSelected: DirectEventHandler<OnPageSelectedEventData> = (
+    event
+  ) => {
+    scheduleStore.actions.setLastTabPage(event.nativeEvent.position);
+  };
+
+  const contentLength = useMemo(() => {
+    switch (scheduleStore.lastTabPage) {
+      case 0:
+        return proceedScheduleData.scheduled.length;
+      case 1:
+        return proceedScheduleData.live.length;
+      case 2:
+        return proceedScheduleData.daily.length;
+      case 3:
+        return proceedScheduleData.all.length;
+      default:
+        return proceedScheduleData.scheduled.length;
     }
-
-    const queryString = addEscapeCharacter(channelQuery);
-    const queryReg = new RegExp(queryString, "i");
-
-    let allCount = 0;
-    let videoCount = 0;
-
-    const filteredContent = schedule.data.filter((content) => {
-      const channelNames =
-        cache.channelMap[content.channelId]?.names?.join(" ") || "";
-
-      if (!queryReg.test(channelNames)) return false;
-
-      const inBlacklist = cache.blackListMap.has(content.channelId);
-      const inWhitelist = cache.whiteListMap.has(content.channelId);
-
-      let isPassList: boolean = true;
-
-      // if (scheduleDto.isFavorite) {
-      //   isPassList = inWhitelist;
-      // } else {
-      //   isPassList = !inBlacklist;
-      // }
-
-      let isPassType: boolean;
-
-      switch (select) {
-        case "stream":
-          isPassType = !content.isVideo;
-          break;
-        case "video":
-          isPassType = content.isVideo;
-          break;
-        default:
-          isPassType = true;
-          break;
-      }
-
-      if (isPassList) allCount++;
-      if (content.isVideo && isPassList) videoCount++;
-      return isPassList && isPassType;
-    });
-
-    return {
-      content: filteredContent,
-      length: {
-        all: allCount,
-        stream: allCount - videoCount,
-        video: videoCount,
-      },
-    };
-  }, [schedule.data, channelQuery, select, cache]);
+  }, [scheduleStore.lastTabPage, proceedScheduleData]);
 
   if (schedule.isPending) {
     return (
-      <SafeAreaView
-        edges={["top", "left", "right"]}
-        style={styles.loadingContainer}
-      >
+      <SafeAreaView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#fff" />
       </SafeAreaView>
     );
@@ -108,18 +75,41 @@ export default function ScheduleScreen() {
   return (
     <>
       <SafeAreaView edges={["top", "left", "right"]} style={styles.container}>
-        <SegmentControl filter={filter} onChange={onChangeFilter} />
+        <SegmentControl movePage={movePage} />
         <SearchNav
           query={channelQuery}
-          count={proceedScheduleData.length}
+          contentLength={contentLength}
           openSearchModal={openSearchModal}
         />
-        <ScheduleHome data={proceedScheduleData.content ?? []} />
+        <PagerView
+          ref={pageViewRef}
+          initialPage={scheduleStore.lastTabPage}
+          style={{ flex: 1 }}
+          onPageSelected={onPageSelected}
+        >
+          <ScheduleList
+            key={StreamFilter.scheduled}
+            proceedScheduleData={proceedScheduleData.scheduled}
+          />
+          <ScheduleList
+            key={StreamFilter.live}
+            proceedScheduleData={proceedScheduleData.live}
+          />
+          <ScheduleList
+            key={StreamFilter.daily}
+            proceedScheduleData={proceedScheduleData.scheduled}
+          />
+          <ScheduleList
+            key={StreamFilter.all}
+            proceedScheduleData={proceedScheduleData.all}
+          />
+        </PagerView>
       </SafeAreaView>
 
       {isShowSearchModal && (
         <SearchModal
           query={channelQuery}
+          contentLength={contentLength}
           closeSearchModal={closeSearchModal}
           onChangeQuery={onChangeQuery}
         />

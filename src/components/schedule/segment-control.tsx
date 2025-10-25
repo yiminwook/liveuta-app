@@ -1,3 +1,4 @@
+import { useScheduleStore } from "@/stores/schedule";
 import { StreamFilter } from "@/types";
 import { StyleSheet, useColorScheme } from "react-native";
 import { Pressable, Text, View } from "react-native";
@@ -22,12 +23,12 @@ const BUTTON_TEXT = [
 ];
 
 type Props = {
-  filter: StreamFilter;
-  onChange: (filter: StreamFilter) => void;
+  movePage: (position: number) => void;
 };
 
-export default function SegmentControl({ filter, onChange }: Props) {
+export default function SegmentControl({ movePage }: Props) {
   const colorScheme = useColorScheme() || "light";
+  const lastTabPage = useScheduleStore((state) => state.lastTabPage);
 
   return (
     <View
@@ -36,33 +37,35 @@ export default function SegmentControl({ filter, onChange }: Props) {
         colorScheme === "light" ? styles.containerLight : styles.containerDark,
       ]}
     >
-      {BUTTON_TEXT.map((item) => (
-        <Pressable
-          key={item.value}
-          onPress={() => onChange(item.value)}
-          style={({ pressed }) => [
-            styles.button,
-            colorScheme === "light" ? styles.buttonLight : styles.buttonDark,
-            filter === item.value && colorScheme === "light"
-              ? styles.activeButtonLight
-              : styles.activeButtonDark,
-            pressed && colorScheme === "light" && styles.buttonPressedLight,
-            pressed && colorScheme === "dark" && styles.buttonPressedDark,
-          ]}
-        >
-          <Text
-            style={[
-              styles.text,
-              colorScheme === "light" ? styles.textLight : styles.textDark,
-              filter === item.value && colorScheme === "light"
-                ? styles.activeTextLight
-                : styles.activeTextDark,
+      {BUTTON_TEXT.map((item, index) => {
+        const isActive = lastTabPage === index;
+
+        return (
+          <Pressable
+            key={item.value}
+            onPress={() => movePage(index)}
+            style={({ pressed }) => [
+              styles.button,
+              colorScheme === "light" ? styles.buttonLight : styles.buttonDark,
+              isActive && colorScheme === "light" && styles.activeButtonLight,
+              isActive && colorScheme === "dark" && styles.activeButtonDark,
+              pressed && colorScheme === "light" && styles.buttonPressedLight,
+              pressed && colorScheme === "dark" && styles.buttonPressedDark,
             ]}
           >
-            {item.text}
-          </Text>
-        </Pressable>
-      ))}
+            <Text
+              style={[
+                styles.text,
+                colorScheme === "light" ? styles.textLight : styles.textDark,
+                isActive && colorScheme === "light" && styles.activeTextLight,
+                isActive && colorScheme === "dark" && styles.activeTextDark,
+              ]}
+            >
+              {item.text}
+            </Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
@@ -109,10 +112,10 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   activeButtonLight: {
-    backgroundColor: "#fff",
+    backgroundColor: "red",
   },
   activeButtonDark: {
-    backgroundColor: "#000",
+    backgroundColor: "red",
   },
   activeTextLight: {
     color: "#000",

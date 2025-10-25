@@ -2,8 +2,8 @@ export type Entity = [string, string][];
 
 export const SCHEDULE_SELECT_TP: Entity = [
   ["all", "전체"],
-  ["stream", "라이브"],
-  ["video", "영상"],
+  ["stream", "방송"],
+  ["video", "동영상"],
 ];
 
 export const findEntity = (entity: Entity, value: string) => {

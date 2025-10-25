@@ -16,12 +16,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
   query: string;
+  contentLength: {
+    all: number;
+    stream: number;
+    video: number;
+  };
   closeSearchModal: () => void;
   onChangeQuery: (query: string) => void;
 };
 
 export default function SearchModal({
   query,
+  contentLength,
   closeSearchModal,
   onChangeQuery,
 }: Props) {
@@ -52,6 +58,7 @@ export default function SearchModal({
           <View style={styles.videoTypeButtonBox}>
             {SCHEDULE_SELECT_TP.map(([value, item]) => (
               <TouchableOpacity
+                key={value}
                 onPress={selectVideoType(value as TScheduleSelect)}
                 style={styles.videoTypeButton}
               >
@@ -70,7 +77,7 @@ export default function SearchModal({
                     { color: select === value ? "green" : "black" },
                   ]}
                 >
-                  {item}
+                  {item} ({contentLength[value as TScheduleSelect] ?? "N/A"})
                 </Text>
               </TouchableOpacity>
             ))}

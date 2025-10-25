@@ -1,4 +1,5 @@
 import { useScheduleStore } from "@/stores/schedule";
+import { TScheduleSelect } from "@/types";
 import { findEntity, SCHEDULE_SELECT_TP } from "@/types/tp";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -13,7 +14,7 @@ import {
 
 type Props = {
   query: string;
-  count: {
+  contentLength: {
     all: number;
     stream: number;
     video: number;
@@ -21,7 +22,11 @@ type Props = {
   openSearchModal: () => void;
 };
 
-export default function SearchNav({ query, count, openSearchModal }: Props) {
+export default function SearchNav({
+  query,
+  contentLength,
+  openSearchModal,
+}: Props) {
   const colorScheme = useColorScheme() || "light";
   const select = useScheduleStore((state) => state.select);
 
@@ -31,11 +36,23 @@ export default function SearchNav({ query, count, openSearchModal }: Props) {
         <Text style={[styles.countBoxText, { marginRight: 5 }]}>
           {findEntity(SCHEDULE_SELECT_TP, select)?.value}
         </Text>
-        <Text style={styles.countBoxText}>{count?.[select] || "N/A"}</Text>
+        <Text style={styles.countBoxText}>
+          {contentLength[select] ?? "N/A"}
+        </Text>
       </View>
 
-      <TouchableOpacity style={styles.searchButton} onPress={openSearchModal}>
-        <Text>{query}</Text>
+      <TouchableOpacity
+        style={styles.searchButton}
+        onPress={openSearchModal}
+        hitSlop={10}
+      >
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={styles.searchButtonText}
+        >
+          {query}
+        </Text>
         <Ionicons name="search" size={24} color="black" />
       </TouchableOpacity>
     </View>
@@ -59,5 +76,12 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     flexDirection: "row",
+    backgroundColor: "#f0f0f0",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+  },
+  searchButtonText: {
+    width: 100,
   },
 });
