@@ -4,14 +4,14 @@ import { HMS } from "@/types";
 type TranslateFunction = (key: string, options?: { count: number }) => string;
 
 export const getInterval = (
-  scheduledTimeStamp: Date,
+  /** utc 시간 */
+  scheduledTimeStamp: dayjs.Dayjs,
   t: TranslateFunction
 ): string => {
-  const utcTime = dayjs(scheduledTimeStamp);
   const nowTimeStamp = dayjs();
 
   /** 분 */
-  const interval = utcTime.diff(nowTimeStamp, "minute");
+  const interval = scheduledTimeStamp.diff(nowTimeStamp, "minute");
 
   if (interval < 0) {
     return "";

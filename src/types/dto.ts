@@ -8,7 +8,7 @@ export const scheduleDto = z.object({
     .nullish()
     .transform((v) => v || ""),
   filter: z
-    .nativeEnum(StreamFilter)
+    .enum(StreamFilter)
     .nullish()
     .transform((v) => v || StreamFilter.scheduled),
   select: z

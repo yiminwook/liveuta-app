@@ -6,7 +6,7 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "biome.enabled": false,
   "i18n-ally.localesPaths": [
-    "messages",
+    "./src/messages",
     "ios/Pods/ReactNativeDependencies/Headers/folly/lang",
     "ios/Pods/Headers/Public/ReactNativeDependencies/folly/lang",
     "ios/Pods/Headers/Private/ReactNativeDependencies/folly/lang",

@@ -25,6 +25,9 @@ import {
 import ToastManager from "toastify-react-native/components/ToastManager";
 import "@/libraries/i18n";
 import * as Sentry from "@sentry/react-native";
+import "dayjs/locale/ko";
+import "dayjs/locale/ja";
+import "dayjs/locale/en";
 
 Sentry.init({
   dsn: "https://6ade1cdb94ad639de212e46f99e5ded3@o4508487071563776.ingest.us.sentry.io/4510249992978432",

@@ -4,7 +4,11 @@ import { SCHEDULES_TAG } from "@/constants/revalidate-tag";
 import { useScheduleStore } from "@/stores/schedule";
 import { TScheduleSelect } from "@/types";
 import { TGetScheduleResponse } from "@/types/api/schedule";
-import { TParsedClientContent, TParsedServerContent } from "@/types/mongodb";
+import {
+  TChannelDocumentWithoutId,
+  TParsedClientContent,
+  TParsedServerContent,
+} from "@/types/api/was";
 import { waitfor } from "@/utils/helper";
 import { addEscapeCharacter, replaceParentheses } from "@/utils/regexp";
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -149,6 +153,7 @@ export const useProceedScheduleData = (args: {
       if (!isPassList) return;
 
       const parsedData: TParsedClientContent = {
+        ...args.cache.channelMap?.[item.channelId],
         videoId: item.videoId,
         channelId: item.channelId,
         broadcastStatus: item.broadcastStatus,

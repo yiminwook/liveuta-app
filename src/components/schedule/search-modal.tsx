@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
   query: string;
@@ -33,6 +33,8 @@ export default function SearchModal({
 }: Props) {
   const [inputValue, setInputValue] = useState(query);
   const select = useScheduleStore((state) => state.select);
+  const insets = useSafeAreaInsets();
+
   const setSelect = useScheduleStore((state) => state.actions.setSelect);
 
   const onChangeText = (text: string) => setInputValue(() => text);
@@ -45,7 +47,12 @@ export default function SearchModal({
 
   return (
     <Modal visible animationType="fade">
-      <SafeAreaView style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { paddingTop: insets.top, paddingBottom: insets.bottom }, // safe area view edges 버그때문에 적용안됨
+        ]}
+      >
         <View style={styles.topBox}>
           <View />
           <TouchableOpacity onPress={closeSearchModal}>
@@ -98,7 +105,7 @@ export default function SearchModal({
             <Ionicons name="search" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 }

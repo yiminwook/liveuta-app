@@ -1,18 +1,12 @@
-import { TParsedClientContent } from "@/types/mongodb";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import ListItem from "./list-item";
-import { useRef, useState } from "react";
-import { useScrollToTop } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import { SCHEDULES_TAG } from "@/constants/revalidate-tag";
 import { TProceedScheduleData } from "@/hooks/api/use-schedule";
 import { useScheduleStore } from "@/stores/schedule";
+import { TParsedClientContent } from "@/types/api/was";
+import { useScrollToTop } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import ListItem from "./list-item";
 
 type Props = {
   proceedScheduleData: TProceedScheduleData;
