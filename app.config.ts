@@ -98,6 +98,15 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       "expo-router",
       "expo-font",
       [
+        "expo-localization",
+        {
+          supportedLocales: {
+            ios: ["ko"],
+            android: ["ko"],
+          },
+        },
+      ],
+      [
         "expo-splash-screen",
         {
           image: val.assets.splash,

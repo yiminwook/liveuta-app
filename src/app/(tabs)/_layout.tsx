@@ -52,6 +52,21 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="my"
+        options={{
+          title: "마이",
+          popToTopOnBlur: true,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={20}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

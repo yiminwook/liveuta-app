@@ -171,3 +171,14 @@ keytool -export -rfc -alias <your_key_alias> -file expo_upload_key.pem -keystore
 ### EAS Updates
 
 `eas update --channel production --message "message"`
+
+### ENV
+
+production - 운영배포앱
+development - 개발배포앱 (testFlight에서 설치)
+preview - 개발배포앱 (local에서 설치)
+
+```
+EXPO_PUBLIC_FRONT_URL=
+APP_ENV=
+```

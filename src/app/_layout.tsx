@@ -23,6 +23,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import ToastManager from "toastify-react-native/components/ToastManager";
+import "@/libraries/i18n";
 
 export const unstable_settings = {
   anchor: "(tabs)",

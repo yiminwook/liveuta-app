@@ -1,4 +1,4 @@
-import { GRAY_COLOR } from "@/constants/colors";
+import { GRAY_COLOR } from "@/constants/theme";
 import {
   StyleProp,
   StyleSheet,

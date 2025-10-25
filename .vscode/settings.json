@@ -1,8 +1,15 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
-    "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "biome.enabled": false,
+  "i18n-ally.localesPaths": [
+    "messages",
+    "ios/Pods/ReactNativeDependencies/Headers/folly/lang",
+    "ios/Pods/Headers/Public/ReactNativeDependencies/folly/lang",
+    "ios/Pods/Headers/Private/ReactNativeDependencies/folly/lang",
+    "ios/Pods/ReactNativeDependencies/framework/packages/react-native/ReactNativeDependencies.xcframework/Headers/folly/lang"
+  ]
 }

@@ -10,6 +10,8 @@ module.exports = defineConfig([
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-unused-imports": "off",
       "unused-imports/no-unused-imports": "off",
+      "no-restricted-syntax": "off",
+      "no-unused-vars": "off",
     },
     organizeImportsSkipDestructiveCodeActions: true,
   },

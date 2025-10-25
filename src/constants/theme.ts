@@ -8,6 +8,12 @@ import { Platform } from "react-native";
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
+export const GREEN_COLOR = "#34C759";
+export const GRAY_COLOR = "#8E8E93";
+
+export const BLUE_COLOR = "#667eea";
+export const PURPLE_COLOR = "#764ba2";
+
 export const SHEET_COLOR = "#ffffff";
 
 export const COLORS = {

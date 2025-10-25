@@ -1,0 +1,9 @@
+{
+  "dayjsScheduleTemplate": "M월 DD일 (ddd) A hh:mm",
+  "time": {
+    "intervalMinutes": "{{count}}분 후",
+    "intervalHours": "{{count}}시간 후",
+    "longTemplate": "M월 DD일 (ddd) A hh:mm",
+    "shortTemplate": "YYYY년 MM월 DD일"
+  }
+}
