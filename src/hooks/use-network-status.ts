@@ -18,7 +18,14 @@ export function useNetworkStatus() {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
-      const isOffline = !state.isConnected || !state.isInternetReachable;
+      const isOffline = state.isInternetReachable === false;
+      // console.log("netInfo-event-isConntected", state.isConnected);
+      // console.log(
+      //   "netInfo-event-isInternetReachable",
+      //   state.isInternetReachable
+      // );
+      // console.log("netInfo-event-isOffline", isOffline);
+      // console.log("type", state.type);
 
       setNetworkStatus({
         isConnected: state.isConnected ?? false,
@@ -30,7 +37,13 @@ export function useNetworkStatus() {
 
     // 초기 상태 확인
     NetInfo.fetch().then((state) => {
-      const isOffline = !state.isConnected || !state.isInternetReachable;
+      const isOffline = state.isInternetReachable === false;
+      // console.log("netInfo-fetch-isConntected", state.isConnected);
+      // console.log(
+      //   "netInfo-fetch-isInternetReachable",
+      //   state.isInternetReachable
+      // );
+      // console.log("netInfo-fetch-isOffline", isOffline);
 
       setNetworkStatus({
         isConnected: state.isConnected ?? false,
