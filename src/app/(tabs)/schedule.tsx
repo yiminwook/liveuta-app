@@ -9,7 +9,7 @@ import { useScheduleStore } from "@/stores/schedule";
 import { StreamFilter } from "@/types";
 import { addEscapeCharacter } from "@/utils/regexp";
 import { useMemo, useState } from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator, Button, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ScheduleScreen() {

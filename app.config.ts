@@ -98,6 +98,14 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       "expo-router",
       "expo-font",
       [
+        "@sentry/react-native/expo",
+        {
+          url: "https://sentry.io/",
+          project: "liveuta-app",
+          organization: "yisp",
+        },
+      ],
+      [
         "expo-localization",
         {
           supportedLocales: {

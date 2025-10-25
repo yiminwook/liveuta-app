@@ -24,6 +24,8 @@ import {
 } from "react-native-safe-area-context";
 import ToastManager from "toastify-react-native/components/ToastManager";
 import "@/libraries/i18n";
+import * as Sentry from "@sentry/react-native";
+import "@/libraries/sentry";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -44,7 +46,7 @@ SplashScreen.preventAutoHideAsync().catch(() => {
   /* reloading the app might trigger some race conditions, ignore them */
 });
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
   const colorScheme = useColorScheme();
   const inset = useSafeAreaInsets();
 
@@ -95,7 +97,7 @@ export default function RootLayout() {
       </ReactQueryProvider>
     </NotificationProvider>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
