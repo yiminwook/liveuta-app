@@ -1,17 +1,25 @@
-import { generateThumbnail, generateVideoUrl } from "@/libraries/youtube/url";
+import {
+  generateChannelUrl,
+  generateThumbnail,
+  generateVideoUrl,
+} from "@/libraries/youtube/url";
 import { TParsedClientContent } from "@/types/api/was";
 import {
   Dimensions,
   Image,
+  Platform,
   Pressable,
+  Share,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from "react-native";
 import * as Linking from "expo-linking";
 import { useTranslation } from "react-i18next";
 import { getInterval } from "@/utils/time";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
   item: TParsedClientContent;
@@ -22,6 +30,7 @@ export default function ListItem({ item }: Props) {
   const colorScheme = useColorScheme() || "light";
   const videoUrl = generateVideoUrl(item.videoId);
   const thumbnailUrl = generateThumbnail(item.videoId, "mqdefault");
+  const channelUrl = generateChannelUrl(item.channelId);
 
   return (
     <View
@@ -38,19 +47,48 @@ export default function ListItem({ item }: Props) {
         />
       </Pressable>
       <View style={styles.descriptionBox}>
-        <Text style={styles.channelName}>{item?.name_kor ?? "N/A"}</Text>
-        <Text style={styles.title} numberOfLines={2}>
-          {item.title}
-        </Text>
-        <Text>{item.utcTime.format(t("time.longTemplate"))}</Text>
-        <Text>{getInterval(item.utcTime, t)}</Text>
-        {item.broadcastStatus !== "TRUE" ? (
-          <Text>
-            {item.broadcastStatus === "NULL" ? "방송예정" : "방송종료"}
+        <TouchableOpacity onPress={() => Linking.openURL(channelUrl)}>
+          <Text style={styles.channelName}>{item?.name_kor ?? "N/A"}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => Linking.openURL(videoUrl)}>
+          <Text style={styles.title} numberOfLines={2}>
+            {item.title}
           </Text>
-        ) : (
-          <Text>시청자: {item.viewer} 명</Text>
-        )}
+        </TouchableOpacity>
+
+        <Text>{item.utcTime.format(t("time.longTemplate"))}</Text>
+
+        <Text>{getInterval(item.utcTime, t)}</Text>
+
+        <View style={styles.actionButtonBox}>
+          {item.broadcastStatus !== "TRUE" ? (
+            <Text>
+              {item.broadcastStatus === "NULL" ? "방송예정" : "방송종료"}
+            </Text>
+          ) : (
+            <Text>시청자: {item.viewer} 명</Text>
+          )}
+
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => {
+              if (Platform.OS === "ios") {
+                Share.share({
+                  title: item.title,
+                  url: videoUrl,
+                });
+              } else {
+                Share.share({
+                  title: item.title,
+                  message: videoUrl,
+                });
+              }
+            }}
+          >
+            <Ionicons name="share-social-outline" size={12} color="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -92,5 +130,15 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 5,
+  },
+  actionButtonBox: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  actionButton: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#f2b4bf",
   },
 });
