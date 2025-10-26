@@ -24,13 +24,13 @@ export default function TabLayout() {
       <Tabs.Screen name="index" options={{ href: null }} />
 
       <Tabs.Screen
-        name="schedule"
+        name="channel"
         options={{
-          title: "스케쥴",
+          title: "채널",
           popToTopOnBlur: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "calendar" : "calendar-outline"}
+              name={focused ? "tv" : "tv-outline"}
               size={20}
               color={color}
             />
@@ -39,13 +39,13 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="channel"
+        name="schedule"
         options={{
-          title: "채널",
+          title: "스케쥴",
           popToTopOnBlur: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "tv" : "tv-outline"}
+              name={focused ? "calendar" : "calendar-outline"}
               size={20}
               color={color}
             />
