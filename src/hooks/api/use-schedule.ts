@@ -1,14 +1,10 @@
-import { clientApi } from "@/apis/fetcher";
+import { wasApi } from "@/apis/fetcher";
 import { SCHEDULE_CACHE_TIME, SCROLL_PER_YOUTUBE_CARD } from "@/constants";
 import { SCHEDULES_TAG } from "@/constants/revalidate-tag";
 import { useScheduleStore } from "@/stores/schedule";
 import { TScheduleSelect } from "@/types";
 import { TGetScheduleResponse } from "@/types/api/schedule";
-import {
-  TChannelDocumentWithoutId,
-  TParsedClientContent,
-  TParsedServerContent,
-} from "@/types/api/was";
+import { TParsedClientContent, TParsedServerContent } from "@/types/api/was";
 import { waitfor } from "@/utils/helper";
 import { addEscapeCharacter, replaceParentheses } from "@/utils/regexp";
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,7 +26,7 @@ export function useScheduleQuery(arg: {
   const query = useQuery({
     queryKey: [SCHEDULES_TAG],
     queryFn: () =>
-      clientApi
+      wasApi
         .get<TGetScheduleResponse>("v1/schedule")
         .then((res) => res.data.data),
     staleTime: SCHEDULE_CACHE_TIME, // 페이지 이동시 SCHEDULE_CACHE_TIME 동안은 캐시를 사용, data-fetching이 발생하지 않음

@@ -101,6 +101,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
     plugins: [
       "expo-router",
       "expo-font",
+      "expo-asset",
       [
         "expo-localization",
         {

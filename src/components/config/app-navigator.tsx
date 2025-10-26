@@ -16,6 +16,14 @@ export default function AppNavigator({ isLoggedIn }: AppNavigatorProps) {
       }}
     >
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen
+        name="setting"
+        options={{
+          headerShown: true,
+          title: "설정",
+          headerBackButtonDisplayMode: "generic",
+        }}
+      />
 
       <Stack.Protected guard={!isLoggedIn}></Stack.Protected>
 

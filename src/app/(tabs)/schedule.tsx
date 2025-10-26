@@ -66,7 +66,7 @@ export default function ScheduleScreen() {
 
   if (schedule.isPending) {
     return (
-      <SafeAreaView style={styles.loadingContainer}>
+      <SafeAreaView style={styles.loadingContainer} edges={["top"]}>
         <ActivityIndicator size="large" color="#fff" />
       </SafeAreaView>
     );

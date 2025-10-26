@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   Modal,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -46,11 +47,15 @@ export default function SearchModal({
   const selectVideoType = (type: TScheduleSelect) => () => setSelect(type);
 
   return (
-    <Modal visible animationType="fade">
+    <Modal visible presentationStyle="pageSheet" animationType="slide">
       <View
         style={[
           styles.container,
-          { paddingTop: insets.top, paddingBottom: insets.bottom }, // safe area view edges 버그때문에 적용안됨
+          {
+            // safe area view edges 버그때문에 적용안됨
+            paddingTop: Platform.OS === "ios" ? 20 : insets.top,
+            paddingBottom: insets.bottom,
+          },
         ]}
       >
         <View style={styles.topBox}>

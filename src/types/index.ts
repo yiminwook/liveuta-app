@@ -28,6 +28,7 @@ export type ServerActionResponse<T> = {
 export type TMetadata = {
   cover_image_url: string;
   default_video_id: string;
+  app_runtime_version: string;
 };
 
 export const CHANNEL_QUERY_TYPE = ["name", "handle", "channelId"] as const;

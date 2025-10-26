@@ -1,5 +1,5 @@
 "use client";
-import { clientApi } from "@/apis/fetcher";
+import { wasApi } from "@/apis/fetcher";
 import {
   BLACKLIST_TAG,
   CHANNELS_TAG,
@@ -17,7 +17,7 @@ export const useChannelList = () => {
   return useQuery({
     queryKey: [CHANNELS_TAG],
     queryFn: () =>
-      clientApi.get<TGetChannelRes>("v1/channel").then((res) => res.data.data),
+      wasApi.get<TGetChannelRes>("v1/channel").then((res) => res.data.data),
     gcTime: Infinity,
   });
 };
@@ -28,15 +28,13 @@ const useCachedData = ({ session }: LayoutDataObserverProps) => {
       {
         queryKey: [CHANNELS_TAG],
         queryFn: () =>
-          clientApi
-            .get<TGetChannelRes>("v1/channel")
-            .then((res) => res.data.data),
+          wasApi.get<TGetChannelRes>("v1/channel").then((res) => res.data.data),
         gcTime: Infinity,
       },
       {
         queryKey: [BLACKLIST_TAG],
         queryFn: () =>
-          clientApi
+          wasApi
             .get<{ message: string; data: string[] }>("v1/blacklist")
             .then((res) => res.data.data),
         enabled: !!session,
@@ -45,7 +43,7 @@ const useCachedData = ({ session }: LayoutDataObserverProps) => {
       {
         queryKey: [WHITELIST_TAG],
         queryFn: () =>
-          clientApi
+          wasApi
             .get<{ message: string; data: string[] }>("v1/whitelist")
             .then((res) => res.data.data),
         enabled: !!session,

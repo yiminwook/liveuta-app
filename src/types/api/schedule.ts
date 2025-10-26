@@ -1,4 +1,4 @@
-import { TParsedServerContent } from "@/types/mongodb";
+import { TParsedServerContent } from "@/types/api/was";
 
 export type TGetScheduleResponse = {
   message: string;
