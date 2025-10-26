@@ -15,7 +15,7 @@ export default function TabLayout() {
       initialRouteName="schedule"
       backBehavior="history"
       screenOptions={{
-        animation: "shift",
+        animation: "none", // IOS 26에서 버그있어서 막아둠
         tabBarActiveTintColor: COLORS[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarButton: HapticTab,

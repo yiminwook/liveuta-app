@@ -2,7 +2,6 @@ import { SHEET_COLOR } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import {
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
