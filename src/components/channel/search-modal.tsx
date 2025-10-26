@@ -17,34 +17,24 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
   query: string;
-  contentLength: {
-    all: number;
-    stream: number;
-    video: number;
-  };
   closeSearchModal: () => void;
   onChangeQuery: (query: string) => void;
 };
 
-export default function ScheduleSearchModal({
+export default function ChannelSearchModal({
   query,
-  contentLength,
   closeSearchModal,
   onChangeQuery,
 }: Props) {
   const [inputValue, setInputValue] = useState(query);
-  const select = useScheduleStore((state) => state.select);
-  const insets = useSafeAreaInsets();
 
-  const setSelect = useScheduleStore((state) => state.actions.setSelect);
+  const insets = useSafeAreaInsets();
 
   const onChangeText = (text: string) => setInputValue(() => text);
   const handleSearch = () => {
     onChangeQuery(inputValue);
     closeSearchModal();
   };
-
-  const selectVideoType = (type: TScheduleSelect) => () => setSelect(type);
 
   return (
     <Modal visible presentationStyle="pageSheet" animationType="slide">
@@ -63,37 +53,6 @@ export default function ScheduleSearchModal({
           <TouchableOpacity onPress={closeSearchModal}>
             <Ionicons name="close" size={24} color="black" />
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.videoTypeBox}>
-          <Text style={styles.videoTypeBoxText}>영상 종류를 선택하세요</Text>
-          <View style={styles.videoTypeButtonBox}>
-            {SCHEDULE_SELECT_TP.map(([value, item]) => (
-              <TouchableOpacity
-                key={value}
-                onPress={selectVideoType(value as TScheduleSelect)}
-                style={styles.videoTypeButton}
-              >
-                <Ionicons
-                  name={
-                    select === value ? "checkbox-outline" : "square-outline"
-                  }
-                  style={{ marginRight: 5 }}
-                  size={24}
-                  color={select === value ? "green" : "black"}
-                />
-
-                <Text
-                  style={[
-                    styles.videoTypeButtonText,
-                    { color: select === value ? "green" : "black" },
-                  ]}
-                >
-                  {item} ({contentLength[value as TScheduleSelect] ?? "N/A"})
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
         </View>
 
         <View style={styles.inputBox}>

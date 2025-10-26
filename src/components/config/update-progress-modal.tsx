@@ -14,6 +14,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import * as Updates from "expo-updates";
+import { TINT_COLOR } from "@/constants/theme";
 
 const { width } = Dimensions.get("window");
 
@@ -105,7 +106,7 @@ export function UpdateProgressModal({
         <View style={styles.container}>
           <ActivityIndicator
             size="large"
-            color="#007AFF"
+            color={TINT_COLOR}
             style={styles.spinner}
           />
 

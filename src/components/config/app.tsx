@@ -11,7 +11,7 @@ import {
   Linking,
 } from "react-native";
 import * as Updates from "expo-updates";
-import { SHEET_COLOR } from "@/constants/theme";
+import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
 
 export default memo(function App() {
   const { expoPushToken } = useNotification();
@@ -43,7 +43,7 @@ export default memo(function App() {
           backgroundColor: SHEET_COLOR,
         }}
       >
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color={TINT_COLOR} />
       </View>
     );
   }

@@ -1,43 +1,40 @@
-import { SCHEDULES_TAG } from "@/constants/revalidate-tag";
-import { TProceedScheduleData } from "@/hooks/api/use-schedule";
-import { useScheduleStore } from "@/stores/schedule";
-import { TParsedClientContent } from "@/types/api/was";
+import { TChannelDocumentWithoutId } from "@/types/api/was";
 import { useScrollToTop } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import ScheduleListItem from "./list-item";
+import ChannelListItem from "./list-item";
 
 type Props = {
-  proceedScheduleData: TProceedScheduleData;
+  channelList: TChannelDocumentWithoutId[];
 };
 
-export default function ScheduleList({ proceedScheduleData }: Props) {
+export default function ChannelList({ channelList }: Props) {
   const queryClient = useQueryClient();
 
   const [refreshing, setRefreshing] = useState(false);
 
   const listRef = useRef<FlatList>(null);
 
-  const select = useScheduleStore((state) => state.select);
+  // 데이터 절약을 위해서 막아둠
+  // const handleRefresh = async () => {
+  //   setRefreshing(() => true);
+  //   await queryClient.invalidateQueries({ queryKey: [CHANNELS_TAG] });
+  //   setRefreshing(() => false);
+  // };
 
-  const handleRefresh = async () => {
-    setRefreshing(() => true);
-    await queryClient.invalidateQueries({ queryKey: [SCHEDULES_TAG] });
-    setRefreshing(() => false);
-  };
   useScrollToTop(listRef);
 
   return (
     <FlatList
       ref={listRef}
-      data={proceedScheduleData.content}
+      data={channelList}
       refreshing={refreshing}
-      onRefresh={handleRefresh}
-      keyExtractor={(item, index) => `${item.videoId}-${index}`}
+      // onRefresh={handleRefresh}
+      keyExtractor={(item, index) => `${item.channel_id}-${index}`}
       ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-      renderItem={({ item }: { item: TParsedClientContent }) => (
-        <ScheduleListItem item={item} />
+      renderItem={({ item }: { item: TChannelDocumentWithoutId }) => (
+        <ChannelListItem item={item} />
       )}
       // onEndReached={handleInfinityScroll}
       // onEndReachedThreshold={0.5}

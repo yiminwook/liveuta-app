@@ -1,8 +1,8 @@
 import ScheduleList from "@/components/schedule/list";
-import SearchNav from "@/components/schedule/search-nav";
-import SearchModal from "@/components/schedule/search-modal";
+import ScheduleSearchNav from "@/components/schedule/search-nav";
+import ScheduleSearchModal from "@/components/schedule/search-modal";
 import SegmentControl from "@/components/schedule/segment-control";
-import { SHEET_COLOR } from "@/constants/theme";
+import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
 import useCachedData from "@/hooks/api/use-cached-data";
 import {
   useProceedScheduleData,
@@ -67,7 +67,7 @@ export default function ScheduleScreen() {
   if (schedule.isPending) {
     return (
       <SafeAreaView style={styles.loadingContainer} edges={["top"]}>
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" color={TINT_COLOR} />
       </SafeAreaView>
     );
   }
@@ -76,7 +76,7 @@ export default function ScheduleScreen() {
     <>
       <SafeAreaView edges={["top", "left", "right"]} style={styles.container}>
         <SegmentControl movePage={movePage} />
-        <SearchNav
+        <ScheduleSearchNav
           query={channelQuery}
           contentLength={contentLength}
           openSearchModal={openSearchModal}
@@ -107,7 +107,7 @@ export default function ScheduleScreen() {
       </SafeAreaView>
 
       {isShowSearchModal && (
-        <SearchModal
+        <ScheduleSearchModal
           query={channelQuery}
           contentLength={contentLength}
           closeSearchModal={closeSearchModal}

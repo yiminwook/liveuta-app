@@ -3,7 +3,7 @@ import {
   generateThumbnail,
   generateVideoUrl,
 } from "@/libraries/youtube/url";
-import { TParsedClientContent } from "@/types/api/was";
+import { TChannelDocumentWithoutId } from "@/types/api/was";
 import {
   Dimensions,
   Image,
@@ -18,19 +18,18 @@ import {
 } from "react-native";
 import * as Linking from "expo-linking";
 import { useTranslation } from "react-i18next";
-import { getInterval } from "@/utils/time";
 import { Ionicons } from "@expo/vector-icons";
+import dayjs from "dayjs";
 
 type Props = {
-  item: TParsedClientContent;
+  item: TChannelDocumentWithoutId;
 };
 
-export default function ScheduleListItem({ item }: Props) {
+export default function ChannelListItem({ item }: Props) {
   const { t } = useTranslation();
   const colorScheme = useColorScheme() || "light";
-  const videoUrl = generateVideoUrl(item.videoId);
-  const thumbnailUrl = generateThumbnail(item.videoId, "mqdefault");
-  const channelUrl = generateChannelUrl(item.channelId);
+  const profilePictureUrl = item.profile_picture_url;
+  const channelUrl = generateChannelUrl(item.channel_id);
 
   return (
     <View
@@ -39,9 +38,9 @@ export default function ScheduleListItem({ item }: Props) {
         colorScheme === "light" ? styles.containerLight : styles.containerDark,
       ]}
     >
-      <Pressable onPress={() => Linking.openURL(videoUrl)}>
+      <Pressable onPress={() => Linking.openURL(channelUrl)}>
         <Image
-          source={{ uri: thumbnailUrl }}
+          source={{ uri: profilePictureUrl }}
           style={styles.thumbnail}
           alt="방송 썸네일"
         />
@@ -51,37 +50,29 @@ export default function ScheduleListItem({ item }: Props) {
           <Text style={styles.channelName}>{item?.name_kor ?? "N/A"}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Linking.openURL(videoUrl)}>
+        <TouchableOpacity onPress={() => Linking.openURL(channelUrl)}>
           <Text style={styles.title} numberOfLines={2}>
-            {item.title}
+            {item.handle_name}
           </Text>
         </TouchableOpacity>
 
-        <Text>{item.utcTime.format(t("time.longTemplate"))}</Text>
-
-        <Text>{getInterval(item.utcTime, t)}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          등록일: {dayjs(item.createdAt).format(t("time.shortTemplate"))}
+        </Text>
 
         <View style={styles.actionButtonBox}>
-          {item.broadcastStatus !== "TRUE" ? (
-            <Text>
-              {item.broadcastStatus === "NULL" ? "방송예정" : "방송종료"}
-            </Text>
-          ) : (
-            <Text>시청자: {item.viewer} 명</Text>
-          )}
-
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => {
               if (Platform.OS === "ios") {
                 Share.share({
-                  title: item.title,
-                  url: videoUrl,
+                  title: item.name_kor,
+                  url: channelUrl,
                 });
               } else {
                 Share.share({
-                  title: item.title,
-                  message: videoUrl,
+                  title: item.name_kor,
+                  message: channelUrl,
                 });
               }
             }}
@@ -106,8 +97,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   thumbnail: {
-    width: Dimensions.get("window").width * 0.4,
-    aspectRatio: 16 / 9,
+    width: Dimensions.get("window").width * 0.25,
+    aspectRatio: 1 / 1,
     marginRight: 5,
     borderRadius: 5,
     borderWidth: 1,

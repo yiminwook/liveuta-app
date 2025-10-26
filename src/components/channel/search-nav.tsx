@@ -14,17 +14,13 @@ import {
 
 type Props = {
   query: string;
-  contentLength: {
-    all: number;
-    stream: number;
-    video: number;
-  };
+  length: number;
   openSearchModal: () => void;
 };
 
-export default function ScheduleSearchNav({
+export default function ChannelSearchNav({
   query,
-  contentLength,
+  length,
   openSearchModal,
 }: Props) {
   const colorScheme = useColorScheme() || "light";
@@ -34,11 +30,9 @@ export default function ScheduleSearchNav({
     <View style={styles.container}>
       <View style={styles.countBox}>
         <Text style={[styles.countBoxText, { marginRight: 5 }]}>
-          {findEntity(SCHEDULE_SELECT_TP, select)?.value}
+          등록된 채널:
         </Text>
-        <Text style={styles.countBoxText}>
-          {contentLength[select] ?? "N/A"}
-        </Text>
+        <Text style={styles.countBoxText}>{length} 개</Text>
       </View>
 
       <TouchableOpacity
