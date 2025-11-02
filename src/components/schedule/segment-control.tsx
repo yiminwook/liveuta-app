@@ -2,6 +2,7 @@ import { useScheduleStore } from "@/stores/schedule";
 import { StreamFilter } from "@/types";
 import { StyleSheet, useColorScheme } from "react-native";
 import { Pressable, Text, View } from "react-native";
+import * as Haptics from "expo-haptics";
 
 const BUTTON_TEXT = [
   {
@@ -43,7 +44,10 @@ export default function SegmentControl({ movePage }: Props) {
         return (
           <Pressable
             key={item.value}
-            onPress={() => movePage(index)}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              movePage(index);
+            }}
             style={({ pressed }) => [
               styles.button,
               colorScheme === "light" ? styles.buttonLight : styles.buttonDark,

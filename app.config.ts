@@ -83,10 +83,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
       },
-      icon: {
-        light: val.assets.iosLightIcon,
-        dark: val.assets.iosDarkIcon,
-      },
+      icon: "./src/assets/images/ios.icon",
     },
     android: {
       adaptiveIcon: {
@@ -133,6 +130,12 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
         "expo-secure-store",
         {
           configureAndroidBackup: true,
+        },
+      ],
+      [
+        "expo-notifications",
+        {
+          enableBackgroundRemoteNotifications: true,
         },
       ],
     ],
