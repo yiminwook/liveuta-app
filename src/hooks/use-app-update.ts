@@ -1,4 +1,3 @@
-import { SplashScreen } from "expo-router";
 import * as Updates from "expo-updates";
 import { useCallback, useEffect, useState } from "react";
 
@@ -19,7 +18,7 @@ export interface UpdateActions {
 }
 
 export function useAppUpdate() {
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [isShowUpdateModal, setIsShowUpdateModal] = useState(false);
   const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
 
   const {
@@ -36,7 +35,7 @@ export function useAppUpdate() {
       const update = await Updates.checkForUpdateAsync();
 
       if (update.isAvailable) {
-        setShowUpdateModal(true);
+        setIsShowUpdateModal(true);
         return true;
       }
 
@@ -68,21 +67,18 @@ export function useAppUpdate() {
   }, []);
 
   const showUpdateModalHandler = useCallback(() => {
-    setShowUpdateModal(true);
+    setIsShowUpdateModal(true);
   }, []);
 
   const hideUpdateModalHandler = useCallback(() => {
-    setShowUpdateModal(false);
+    setIsShowUpdateModal(false);
   }, []);
 
   // 앱 시작 시 자동 업데이트 확인
   useEffect(() => {
-    // 우선 스플레쉬 스크린을 숨긴다 중요!
-    SplashScreen.hideAsync().then(() => {
-      if (!__DEV__ && !isCheckingUpdate) {
-        checkForUpdate();
-      }
-    });
+    if (!__DEV__ && !isCheckingUpdate) {
+      checkForUpdate();
+    }
   }, []);
 
   // 업데이트 완료 후 자동 재시작
@@ -116,7 +112,7 @@ export function useAppUpdate() {
   return {
     updateStatus,
     actions,
-    showUpdateModal,
+    isShowUpdateModal,
     isCheckingUpdate,
   };
 }

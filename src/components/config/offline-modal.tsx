@@ -2,50 +2,20 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Modal,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 
 interface OfflineModalProps {
-  visible: boolean;
   onRetry: () => void;
 }
 
-export function OfflineModal({ visible, onRetry }: OfflineModalProps) {
-  // const [isConnected, setIsConnected] = useState(true);
-  const [retryCount, setRetryCount] = useState(0);
-  const fadeAnim = useState(new Animated.Value(0))[0];
-
-  // useEffect(() => {
-  //   const unsubscribe = NetInfo.addEventListener((state) => {
-  //     setIsConnected(state.isConnected ?? false);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  useEffect(() => {
-    if (visible) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [visible]);
-
+export function OfflineModal({ onRetry }: OfflineModalProps) {
   const handleRetry = () => {
     // setRetryCount((prev) => prev + 1);
     onRetry();
@@ -56,49 +26,44 @@ export function OfflineModal({ visible, onRetry }: OfflineModalProps) {
   // }
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="none"
-      statusBarTranslucent
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, styles.overlay]}
+      entering={FadeIn}
+      exiting={FadeOut}
     >
-      <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
-        <View style={styles.container}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="wifi-outline" size={48} color="#FF6B6B" />
-          </View>
-
-          <Text style={styles.title}>인터넷 연결 없음</Text>
-          <Text style={styles.message}>
-            인터넷 연결을 확인하고 앱을 재시작 해주세요.
-          </Text>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.retryButton}
-              onPress={handleRetry}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="refresh" size={20} color="white" />
-              <Text style={styles.retryButtonText}>
-                앱 재시작 {retryCount > 0 && `(${retryCount})`}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.hint}>
-            Wi-Fi 또는 모바일 데이터 연결을 확인해주세요
-          </Text>
+      <View style={styles.container}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="wifi-outline" size={48} color="#FF6B6B" />
         </View>
-      </Animated.View>
-    </Modal>
+
+        <Text style={styles.title}>인터넷 연결 없음</Text>
+        <Text style={styles.message}>
+          인터넷 연결을 확인하고 앱을 재시작 해주세요.
+        </Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={handleRetry}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="refresh" size={20} color="white" />
+            <Text style={styles.retryButtonText}>앱 재시작</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.hint}>
+          Wi-Fi 또는 모바일 데이터 연결을 확인해주세요
+        </Text>
+      </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
   },

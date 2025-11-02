@@ -17,18 +17,38 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import "react-native-reanimated";
 import {
   SafeAreaProvider,
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import "@/libraries/i18n";
 import * as Sentry from "@sentry/react-native";
+import ToastManager from "toastify-react-native/components/ToastManager";
+import * as TaskManager from "expo-task-manager";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  BACKGROUND_NOTIFICATION_TASK,
+  INTERACTED_NOTIFICATION_STORAGE_KEY,
+} from "@/constants/storage-key";
+
+import "react-native-reanimated";
+import "@/libraries/i18n";
 import "dayjs/locale/ko";
 import "dayjs/locale/ja";
 import "dayjs/locale/en";
-import ToastManager from "toastify-react-native/components/ToastManager";
+
+/**
+ * 앱이 실행중이 아닐때 알림을 클릭하면 호출되는 작업
+ */
+TaskManager.defineTask<Notifications.NotificationTaskPayload>(
+  BACKGROUND_NOTIFICATION_TASK,
+  async (body) => {
+    AsyncStorage.setItem(
+      INTERACTED_NOTIFICATION_STORAGE_KEY,
+      JSON.stringify(body)
+    );
+  }
+);
 
 Sentry.init({
   dsn: "https://6ade1cdb94ad639de212e46f99e5ded3@o4508487071563776.ingest.us.sentry.io/4510249992978432",
@@ -72,7 +92,7 @@ export default Sentry.wrap(function RootLayout() {
   const { isOffline } = useNetworkStatus();
 
   // 앱 업데이트 관리
-  const { showUpdateModal, actions: updateActions } = useAppUpdate();
+  const { isShowUpdateModal, actions: updateActions } = useAppUpdate();
 
   return (
     <NotificationProvider>
@@ -87,20 +107,22 @@ export default Sentry.wrap(function RootLayout() {
               <StatusBar style="auto" />
 
               {/* 업데이트 진행도 모달 */}
-              <UpdateProgressModal
-                visible={showUpdateModal}
-                onComplete={updateActions.hideUpdateModal}
-              />
+              {isShowUpdateModal && (
+                <UpdateProgressModal
+                  onComplete={updateActions.hideUpdateModal}
+                />
+              )}
 
               {/* 오프라인 상태 모달 */}
-              <OfflineModal
-                visible={isOffline}
-                onRetry={() => {
-                  // 네트워크 재확인을 위한 간단한 재시도 로직
-                  console.log("네트워크 재확인 시도");
-                  updateActions.restartApp();
-                }}
-              />
+              {isOffline && (
+                <OfflineModal
+                  onRetry={() => {
+                    // 네트워크 재확인을 위한 간단한 재시도 로직
+                    console.log("네트워크 재확인 시도");
+                    updateActions.restartApp();
+                  }}
+                />
+              )}
 
               {/* https://github.com/zahidalidev/toastify-react-native?tab=readme-ov-file#toastmanager-props */}
               <ToastManager

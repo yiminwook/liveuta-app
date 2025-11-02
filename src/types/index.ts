@@ -42,3 +42,23 @@ export type HMS = {
   m: number;
   s: number;
 };
+
+export type TStreamScheduleNotificationData = {
+  type: "stream-schedule";
+  videoId: string;
+  url: string;
+  estimatedAt: number;
+  createdAt: number;
+};
+
+export type TChannelSubscribeNotificationData = {
+  type: "channel-subscribe";
+  channelId: string;
+  url: string;
+  estimatedAt: number;
+  createdAt: number;
+};
+
+export type TNotificationData =
+  | TStreamScheduleNotificationData
+  | TChannelSubscribeNotificationData;

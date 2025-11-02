@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Modal,
   StyleSheet,
   ActivityIndicator,
   Dimensions,
@@ -12,6 +11,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   interpolate,
+  FadeIn,
+  FadeOut,
 } from "react-native-reanimated";
 import * as Updates from "expo-updates";
 import { TINT_COLOR } from "@/constants/theme";
@@ -19,14 +20,11 @@ import { TINT_COLOR } from "@/constants/theme";
 const { width } = Dimensions.get("window");
 
 interface UpdateProgressModalProps {
-  visible: boolean;
   onComplete: () => void;
 }
 
-export function UpdateProgressModal({
-  visible,
-  onComplete,
-}: UpdateProgressModalProps) {
+/** R/N Modal 컴포넌트를 중첩해서 사용할 경우 */
+export function UpdateProgressModal({ onComplete }: UpdateProgressModalProps) {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("업데이트 확인 중...");
 
@@ -90,17 +88,14 @@ export function UpdateProgressModal({
   });
 
   useEffect(() => {
-    if (visible) {
-      startUpdateProcess();
-    }
-  }, [visible]);
+    startUpdateProcess();
+  }, []);
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      statusBarTranslucent
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, styles.overlay]}
+      entering={FadeIn}
+      exiting={FadeOut}
     >
       <View style={styles.overlay}>
         <View style={styles.container}>
@@ -123,7 +118,7 @@ export function UpdateProgressModal({
           </View>
         </View>
       </View>
-    </Modal>
+    </Animated.View>
   );
 }
 

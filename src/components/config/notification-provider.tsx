@@ -2,11 +2,12 @@ import * as Notifications from "expo-notifications";
 import { createContext, use, useEffect, useState } from "react";
 import { registerForPushNotificationsAsync } from "@/libraries/notification";
 import { Href, router } from "expo-router";
-import { Alert } from "react-native";
+import { Alert, Linking } from "react-native";
+import { TNotificationData } from "@/types";
 
 interface TNotificationContext {
   expoPushToken: string | null;
-  notification: Notifications.Notification | null;
+  // notification: Notifications.Notification | null;
   error: Error | null;
 }
 
@@ -30,8 +31,8 @@ export function NotificationProvider({
   children: React.ReactNode;
 }) {
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [notification, setNotification] =
-    useState<Notifications.Notification | null>(null);
+  //const [notification, setNotification] =
+  //   useState<Notifications.Notification | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -47,16 +48,14 @@ export function NotificationProvider({
       }
     }
 
-    Notifications.getLastNotificationResponseAsync().then((response) => {
-      console.log("getLastNotificationResponseAsync", response);
-    });
+    const response = Notifications.getLastNotificationResponse();
+    console.log("getLastNotificationResponse", response);
 
     // 수신 리스너, foreground 상태에서 수신된 알림
     const notificationListener = Notifications.addNotificationReceivedListener(
       async (notification) => {
-        console.log("addNotificationReceivedListener", notification);
-        setNotification(notification);
-
+        // console.log("addNotificationReceivedListener", notification);
+        // setNotification(notification);
         // if (Platform.OS === "android" && AppState.currentState === "active") {
         //   // 포그라운드 상태에서 배너 노출
         //   await Notifications.scheduleNotificationAsync({
@@ -74,14 +73,24 @@ export function NotificationProvider({
     // 응답 리스너, 사용자와 상호작용하는경우
     const responseListener =
       Notifications.addNotificationResponseReceivedListener((response) => {
+        const data = response.notification.request.content
+          .data as TNotificationData;
+
         console.log(
           "addNotificationResponseReceivedListener",
           JSON.stringify(response, null, 2),
           JSON.stringify(response.notification.request.content.data, null, 2)
         );
 
-        console.log("action tp", response.actionIdentifier);
-        console.log("user text", response.userText);
+        if (data.type === "stream-schedule") {
+          Linking.openURL(data.url); // 유투브앱 오픈
+          return;
+        }
+
+        if (data.type === "channel-subscribe") {
+          Linking.openURL(data.url); // 유투브앱 오픈
+          return;
+        }
 
         // handle the notification response here
         redirect(response.notification);
@@ -97,7 +106,6 @@ export function NotificationProvider({
     <NotificationContext
       value={{
         expoPushToken,
-        notification,
         error,
       }}
     >
