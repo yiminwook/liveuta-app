@@ -22,6 +22,7 @@ import { getInterval } from "@/utils/time";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalNotification } from "@/stores/notification";
 import dayjs from "@/libraries/dayjs";
+import { Toast } from "toastify-react-native";
 
 type Props = {
   item: TParsedClientContent;
@@ -102,6 +103,8 @@ export default function ScheduleListItem({ item }: Props) {
                 estimatedAt: item.utcTime.unix(),
                 createdAt: dayjs().unix(),
               });
+
+              Toast.success("알림이 설정되었습니다.");
             }}
           >
             <Ionicons name="notifications-outline" size={12} color="#fff" />

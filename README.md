@@ -170,7 +170,10 @@ keytool -export -rfc -alias <your_key_alias> -file expo_upload_key.pem -keystore
 
 ### EAS Updates
 
-`eas update --channel production --message "message"`
+APP_ENV: eas-cli 실행시 환경변수를 명확히 명시함.
+--clear-cache: env cache 초기화
+
+`APP_ENV=preview eas update --clear-cache`
 
 ### ENV
 
