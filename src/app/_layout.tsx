@@ -23,7 +23,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
-import ToastManager from "toastify-react-native/components/ToastManager";
+import ToastManager from "toastify-react-native";
 import * as TaskManager from "expo-task-manager";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {

@@ -5,6 +5,7 @@ import {
 } from "@/libraries/youtube/url";
 import { TParsedClientContent } from "@/types/api/was";
 import {
+  Alert,
   Dimensions,
   Image,
   Platform,
@@ -35,7 +36,7 @@ export default function ScheduleListItem({ item }: Props) {
   const thumbnailUrl = generateThumbnail(item.videoId, "mqdefault");
   const channelUrl = generateChannelUrl(item.channelId);
 
-  const { actions } = useLocalNotification();
+  const { notifications, actions } = useLocalNotification();
 
   return (
     <View
@@ -95,7 +96,37 @@ export default function ScheduleListItem({ item }: Props) {
           </TouchableOpacity>
 
           <TouchableOpacity
+            style={styles.actionButton}
             onPress={async () => {
+              const index = notifications.findIndex(
+                (notification) =>
+                  notification.content.data.type === "stream-schedule" &&
+                  notification.content.data.videoId === item.videoId
+              );
+
+              if (index > -1) {
+                Alert.alert(
+                  "알림 설정",
+                  "이미 알림 설정되었습니다. 확인을 누르면 알림이 취소됩니다.",
+                  [
+                    {
+                      text: "취소",
+                      style: "cancel",
+                    },
+                    {
+                      text: "확인",
+                      onPress: async () => {
+                        await actions.cancelNotification(
+                          notifications[index].identifier
+                        );
+                        Toast.info("알림이 취소되었습니다.");
+                      },
+                    },
+                  ]
+                );
+                return;
+              }
+
               await actions.addNotification(item.title, item.title, {
                 type: "stream-schedule",
                 videoId: item.videoId,
