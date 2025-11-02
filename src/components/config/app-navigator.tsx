@@ -25,6 +25,15 @@ export default function AppNavigator({ isLoggedIn }: AppNavigatorProps) {
         }}
       />
 
+      <Stack.Screen
+        name="notification"
+        options={{
+          headerShown: true,
+          title: "알림",
+          headerBackButtonDisplayMode: "generic",
+        }}
+      />
+
       <Stack.Protected guard={!isLoggedIn}></Stack.Protected>
 
       <Stack.Protected guard={isLoggedIn}></Stack.Protected>

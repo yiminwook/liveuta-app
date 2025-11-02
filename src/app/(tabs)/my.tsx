@@ -24,6 +24,13 @@ export default function MyScreen() {
             <Text style={styles.itemButtonText}>설정</Text>
           </TouchableOpacity>
         </Link>
+
+        <Link href="/notification" asChild>
+          <TouchableOpacity style={styles.itemButton}>
+            <Ionicons name="notifications" size={30} color="#333333" />
+            <Text style={styles.itemButtonText}>알림</Text>
+          </TouchableOpacity>
+        </Link>
       </ScrollView>
     </SafeAreaView>
   );
