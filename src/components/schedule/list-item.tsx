@@ -20,6 +20,8 @@ import * as Linking from "expo-linking";
 import { useTranslation } from "react-i18next";
 import { getInterval } from "@/utils/time";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalNotification } from "@/stores/notification";
+import dayjs from "@/libraries/dayjs";
 
 type Props = {
   item: TParsedClientContent;
@@ -31,6 +33,8 @@ export default function ScheduleListItem({ item }: Props) {
   const videoUrl = generateVideoUrl(item.videoId);
   const thumbnailUrl = generateThumbnail(item.videoId, "mqdefault");
   const channelUrl = generateChannelUrl(item.channelId);
+
+  const { actions } = useLocalNotification();
 
   return (
     <View
@@ -87,6 +91,20 @@ export default function ScheduleListItem({ item }: Props) {
             }}
           >
             <Ionicons name="share-social-outline" size={12} color="#fff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={async () => {
+              await actions.addNotification(item.title, item.title, {
+                type: "stream-schedule",
+                videoId: item.videoId,
+                url: videoUrl,
+                estimatedAt: item.utcTime.unix(),
+                createdAt: dayjs().unix(),
+              });
+            }}
+          >
+            <Ionicons name="notifications-outline" size={12} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>

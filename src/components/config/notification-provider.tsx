@@ -4,6 +4,7 @@ import { registerForPushNotificationsAsync } from "@/libraries/notification";
 import { Href, router } from "expo-router";
 import { Alert, Linking } from "react-native";
 import { TNotificationData } from "@/types";
+import { useLocalNotification } from "@/stores/notification";
 
 interface TNotificationContext {
   expoPushToken: string | null;
@@ -54,6 +55,8 @@ export function NotificationProvider({
     // 수신 리스너, foreground 상태에서 수신된 알림
     const notificationListener = Notifications.addNotificationReceivedListener(
       async (notification) => {
+        await useLocalNotification.getState().actions.syncNotifications(); // 동기화
+
         // console.log("addNotificationReceivedListener", notification);
         // setNotification(notification);
         // if (Platform.OS === "android" && AppState.currentState === "active") {

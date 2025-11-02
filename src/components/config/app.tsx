@@ -9,6 +9,7 @@ import {
   View,
   Platform,
   Linking,
+  AppState,
 } from "react-native";
 import * as Updates from "expo-updates";
 import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
@@ -18,6 +19,7 @@ import * as Notifications from "expo-notifications";
 import { TNotificationData } from "@/types";
 import * as SplashScreen from "expo-splash-screen";
 import * as TaskManager from "expo-task-manager";
+import { useLocalNotification } from "@/stores/notification";
 
 export default memo(function App() {
   const { expoPushToken } = useNotification();
@@ -74,6 +76,20 @@ export default memo(function App() {
         AsyncStorage.removeItem(INTERACTED_NOTIFICATION_STORAGE_KEY);
         SplashScreen.hideAsync(); // TEST: 스플래쉬 효과 이상한지 체크 필요
       });
+  }, []);
+
+  useEffect(() => {
+    // 앱 시작 시 동기화
+    useLocalNotification.getState().actions.syncNotifications();
+
+    // 포그라운드 복귀 시 동기화
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "active") {
+        useLocalNotification.getState().actions.syncNotifications();
+      }
+    });
+
+    return () => subscription.remove();
   }, []);
 
   if (metaData.isPending) {
