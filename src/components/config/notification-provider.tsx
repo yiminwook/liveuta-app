@@ -3,7 +3,7 @@ import { createContext, use, useEffect, useState } from "react";
 import { registerForPushNotificationsAsync } from "@/libraries/notification";
 import { Href, router } from "expo-router";
 import { Alert, Linking } from "react-native";
-import { TNotificationData } from "@/types";
+import { TNotificationPayload } from "@/types";
 import { useLocalNotification } from "@/stores/notification";
 
 interface TNotificationContext {
@@ -76,8 +76,12 @@ export function NotificationProvider({
     // 응답 리스너, 사용자와 상호작용하는경우
     const responseListener =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        const data = response.notification.request.content
-          .data as TNotificationData;
+        const payload = response.notification.request.content
+          .data as TNotificationPayload;
+        console.log("[TEST] addNotificationResponseReceivedListener", payload);
+
+        const lastNotification = Notifications.getLastNotificationResponse();
+        console.log("[TEST] lastNotification3", lastNotification);
 
         console.log(
           "addNotificationResponseReceivedListener",
@@ -85,13 +89,13 @@ export function NotificationProvider({
           JSON.stringify(response.notification.request.content.data, null, 2)
         );
 
-        if (data.type === "stream-schedule") {
-          Linking.openURL(data.url); // 유투브앱 오픈
+        if (payload.type === "stream-schedule") {
+          Linking.openURL(payload.url); // 유투브앱 오픈
           return;
         }
 
-        if (data.type === "channel-subscribe") {
-          Linking.openURL(data.url); // 유투브앱 오픈
+        if (payload.type === "channel-subscribe") {
+          Linking.openURL(payload.url); // 유투브앱 오픈
           return;
         }
 

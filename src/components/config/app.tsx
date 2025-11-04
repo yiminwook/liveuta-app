@@ -10,13 +10,14 @@ import {
   Platform,
   Linking,
   AppState,
+  InteractionManager,
 } from "react-native";
 import * as Updates from "expo-updates";
 import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { INTERACTED_NOTIFICATION_STORAGE_KEY } from "@/constants/storage-key";
 import * as Notifications from "expo-notifications";
-import { TNotificationData } from "@/types";
+import { TNotificationPayload } from "@/types";
 import * as SplashScreen from "expo-splash-screen";
 import * as TaskManager from "expo-task-manager";
 import { useLocalNotification } from "@/stores/notification";
@@ -44,31 +45,30 @@ export default memo(function App() {
   useEffect(() => {
     AsyncStorage.getItem(INTERACTED_NOTIFICATION_STORAGE_KEY)
       .then((value) => {
-        if (value) {
-          type TaskManagerTaskBody =
-            TaskManager.TaskManagerTaskBody<Notifications.NotificationTaskPayload>;
+        if (!value) return;
+        type TaskManagerTaskBody =
+          TaskManager.TaskManagerTaskBody<Notifications.NotificationTaskPayload>;
 
-          const body: TaskManagerTaskBody = JSON.parse(value);
-          const data = body.data;
+        const body: TaskManagerTaskBody = JSON.parse(value);
+        const data = body.data;
 
-          const isNotificationResponse = "actionIdentifier" in data;
-          if (!isNotificationResponse) return;
+        const isNotificationResponse = "actionIdentifier" in data;
+        if (!isNotificationResponse) return;
 
-          const notification = data.notification;
-          // const actionIdentifier = data.actionIdentifier;
+        const notification = data.notification;
+        // const actionIdentifier = data.actionIdentifier;
 
-          const notificationData = notification.request.content
-            .data as TNotificationData;
+        const payload = notification.request.content
+          .data as TNotificationPayload;
 
-          if (notificationData.type === "stream-schedule") {
-            Linking.openURL(notificationData.url); // 유투브앱 오픈
-            return;
-          }
+        if (payload.type === "stream-schedule") {
+          Linking.openURL(payload.url); // 유투브앱 오픈
+          return;
+        }
 
-          if (notificationData.type === "channel-subscribe") {
-            Linking.openURL(notificationData.url); // 유투브앱 오픈
-            return;
-          }
+        if (payload.type === "channel-subscribe") {
+          Linking.openURL(payload.url); // 유투브앱 오픈
+          return;
         }
       })
       .catch(console.error)
@@ -82,10 +82,18 @@ export default memo(function App() {
     // 앱 시작 시 동기화
     useLocalNotification.getState().actions.syncNotifications();
 
+    setImmediate(() => {
+      const lastNotification = Notifications.getLastNotificationResponse();
+      console.log("[TEST] lastNotification1", lastNotification);
+    });
+
     // 포그라운드 복귀 시 동기화
     const subscription = AppState.addEventListener("change", (nextAppState) => {
+      console.log("[TEST] AppState.addEventListener", nextAppState);
       if (nextAppState === "active") {
+        const lastNotification = Notifications.getLastNotificationResponse();
         useLocalNotification.getState().actions.syncNotifications();
+        console.log("[TEST] lastNotification2", lastNotification);
       }
     });
 

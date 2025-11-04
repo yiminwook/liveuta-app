@@ -1,4 +1,4 @@
-import { TNotificationData } from "@/types";
+import { TNotificationPayload } from "@/types";
 import { create } from "zustand";
 import * as Notifications from "expo-notifications";
 import dayjs from "@/libraries/dayjs";
@@ -12,7 +12,7 @@ export type TLocalNotificationAction = {
   addNotification: (
     title: string,
     body: string,
-    data: TNotificationData
+    data: TNotificationPayload
   ) => Promise<string>;
   cancelNotification: (identifier: string) => Promise<void>;
   cancelAllNotifications: () => Promise<void>;

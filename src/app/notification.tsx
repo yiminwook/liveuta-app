@@ -1,6 +1,6 @@
 import { SHEET_COLOR, BRAND_COLOR } from "@/constants/theme";
 import { useLocalNotification } from "@/stores/notification";
-import { TNotificationData } from "@/types";
+import { TNotificationPayload } from "@/types";
 import {
   Pressable,
   RefreshControl,
@@ -18,7 +18,7 @@ import { useState } from "react";
 import { Toast } from "toastify-react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const getNotificationIcon = (type: TNotificationData["type"]) => {
+const getNotificationIcon = (type: TNotificationPayload["type"]) => {
   switch (type) {
     case "stream-schedule":
       return "tv-outline";
@@ -29,7 +29,7 @@ const getNotificationIcon = (type: TNotificationData["type"]) => {
   }
 };
 
-const getNotificationTypeLabel = (type: TNotificationData["type"]) => {
+const getNotificationTypeLabel = (type: TNotificationPayload["type"]) => {
   switch (type) {
     case "stream-schedule":
       return "방송 일정";
@@ -84,7 +84,7 @@ export default function Notification() {
           </View>
         ) : (
           notifications.map((notification) => {
-            const data = notification.content.data as TNotificationData;
+            const data = notification.content.data as TNotificationPayload;
             return (
               <View
                 key={notification.identifier}
