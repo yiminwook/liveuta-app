@@ -99,6 +99,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       "expo-router",
       "expo-font",
       "expo-asset",
+      "expo-web-browser",
       [
         "expo-localization",
         {
@@ -118,12 +119,6 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
           dark: {
             backgroundColor: "#6a5f71",
           },
-        },
-      ],
-      [
-        "expo-web-browser",
-        {
-          experimentalLauncherActivity: true,
         },
       ],
       [
