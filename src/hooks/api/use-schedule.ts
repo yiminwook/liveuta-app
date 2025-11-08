@@ -168,8 +168,8 @@ export const useProceedScheduleData = (args: {
       }
 
       const isScheduled =
-        parsedData.broadcastStatus === "TRUE" ||
-        parsedData.broadcastStatus === "NULL";
+        // parsedData.broadcastStatus === "TRUE" ||
+        parsedData.broadcastStatus === "NULL"; // 앱에서는 굳이 라이브와 예정을 함께 보여주지 않음
       const isLive = parsedData.broadcastStatus === "TRUE";
       const isDaily = parsedData.utcTime.isAfter(yesterday);
 
