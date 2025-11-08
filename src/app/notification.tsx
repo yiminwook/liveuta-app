@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import dayjs from "@/libraries/dayjs";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Toast } from "toastify-react-native";
@@ -145,9 +144,7 @@ export default function Notification() {
                       ]}
                     >
                       예정:{" "}
-                      {dayjs
-                        .unix(data.estimatedAt)
-                        .format(t("dayjsScheduleTemplate"))}
+                      {data.estimatedAt.format(t("dayjsScheduleTemplate"))}
                     </Text>
                   </View>
                   <View style={styles.timeRow}>
@@ -164,10 +161,7 @@ export default function Notification() {
                           : styles.timeTextDark,
                       ]}
                     >
-                      생성:{" "}
-                      {dayjs
-                        .unix(data.createdAt)
-                        .format(t("dayjsScheduleTemplate"))}
+                      생성: {data.createdAt.format(t("dayjsScheduleTemplate"))}
                     </Text>
                   </View>
                 </View>

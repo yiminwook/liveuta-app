@@ -97,7 +97,7 @@ export default function ScheduleScreen() {
           />
           <ScheduleList
             key={StreamFilter.daily}
-            proceedScheduleData={proceedScheduleData.scheduled}
+            proceedScheduleData={proceedScheduleData.daily}
           />
           <ScheduleList
             key={StreamFilter.all}

@@ -19,6 +19,12 @@ export const PURPLE_COLOR = "#764ba2";
 
 export const SHEET_COLOR = "#ffffff";
 
+export const LIGHT_CLOSED_COLOR = "#d8f2ff";
+export const DARK_CLOSED_COLOR = "#204a60";
+export const LIGHT_STREAM_COLOR = "#fcefc7";
+export const DARK_STREAM_COLOR = "#4d4019";
+export const LIGHT_SCHEDULED_COLOR = "#fff";
+
 export const COLORS = {
   light: {
     text: "#11181C",

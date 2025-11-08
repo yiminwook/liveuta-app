@@ -1,5 +1,5 @@
 import AppNavigator from "@/components/config/app-navigator";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useLayoutEffect } from "react";
 import { useNotification } from "./notification-provider";
 import { useMetaData } from "@/hooks/api/use-meta-data";
 import {
@@ -16,15 +16,22 @@ import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
 import * as Notifications from "expo-notifications";
 import { TNotificationPayload } from "@/types";
 import { useLocalNotification } from "@/stores/notification";
+import { useApp } from "@/stores/app";
+import dayjs from "@/libraries/dayjs";
 
 export default memo(function App() {
   const { expoPushToken } = useNotification();
   const lastNotification = Notifications.getLastNotificationResponse();
+  const locale = useApp((state) => state.locale);
 
   const metaData = useMetaData();
   const isSupportedRuntimeVersion =
     typeof metaData.data?.app_runtime_version === "string" &&
     metaData.data.app_runtime_version === Updates.runtimeVersion;
+
+  useLayoutEffect(() => {
+    dayjs.locale(locale);
+  }, [locale]);
 
   useEffect(() => {
     if (!expoPushToken) return;

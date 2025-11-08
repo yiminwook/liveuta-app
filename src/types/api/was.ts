@@ -1,6 +1,6 @@
 import dayjs from "@/libraries/dayjs";
 import { youtube_v3 } from "googleapis";
-import { TStream } from "../mongodb";
+import { TStream } from "@/types";
 
 export type TContentDocument = {
   _id?: string;

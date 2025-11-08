@@ -11,8 +11,5 @@ dayjs.extend(timezone);
 // dayjs.extend(customParseFormat);
 // dayjs.extend(duration);
 dayjs.extend(relativeTime);
-// 기본적으로 한국어 설정
-dayjs.locale("ko"); //TODO: 언어 설정에 따라 변경필요
 
-//한국어로 설정된 dayjs
 export default dayjs;
