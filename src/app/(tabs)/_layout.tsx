@@ -1,5 +1,5 @@
 import { HapticTab } from "@/components/haptic-tab";
-import { COLORS } from "@/constants/theme";
+import { BRAND_COLOR } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
@@ -16,7 +16,7 @@ export default function TabLayout() {
       backBehavior="history"
       screenOptions={{
         animation: "none", // IOS 26에서 버그있어서 막아둠
-        tabBarActiveTintColor: COLORS[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: BRAND_COLOR,
         headerShown: false,
         tabBarButton: HapticTab,
       }}
