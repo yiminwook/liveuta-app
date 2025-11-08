@@ -215,7 +215,7 @@ export const useProceedScheduleData = (args: {
       daily,
       all,
     };
-  }, [args.scheduleRawData, args.channelQuery, args.cache]);
+  }, [args.scheduleRawData, args.channelQuery, args.cache, args.select]);
 
 /** query observer가 없을때 undefined 반환 */
 export const useScheduleStatus = () => {
