@@ -99,8 +99,8 @@ export default function ScheduleListItem({ item }: Props) {
         type: "stream-schedule",
         videoId: item.videoId,
         url: videoUrl,
-        estimatedAt: dayjs(item.utcTime),
-        createdAt: dayjs(),
+        estimatedAt: dayjs(item.utcTime).toDate(),
+        createdAt: dayjs().toDate(),
       }
     );
 

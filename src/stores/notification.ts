@@ -37,7 +37,7 @@ export const useLocalNotification = create<TLocalNotificationStore>()(
           },
           trigger: {
             type: Notifications.SchedulableTriggerInputTypes.DATE,
-            date: data.estimatedAt.toDate(),
+            date: data.estimatedAt,
             channelId: "default",
           },
         });

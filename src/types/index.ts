@@ -1,5 +1,3 @@
-import type dayjs from "@/libraries/dayjs";
-
 export type Function<T> = (...args: any) => T;
 export type Promised<T extends Function<any>> = Awaited<ReturnType<T>>;
 
@@ -49,18 +47,23 @@ export type TStreamScheduleNotificationPayload = {
   type: "stream-schedule";
   videoId: string;
   url: string;
-  estimatedAt: dayjs.Dayjs;
-  createdAt: dayjs.Dayjs;
+  estimatedAt: Date;
+  createdAt: Date;
 };
 
 export type TChannelSubscribeNotificationPayload = {
   type: "channel-subscribe";
   channelId: string;
   url: string;
-  estimatedAt: dayjs.Dayjs;
-  createdAt: dayjs.Dayjs;
+  estimatedAt: Date;
+  createdAt: Date;
 };
 
+/**
+ * 직렬화에 주의한다!!, 함수를 넣어서는 안됨
+ *
+ * Terminating app due to uncaught exception 'NSInvalidArgumentException'
+ */
 export type TNotificationPayload =
   | TStreamScheduleNotificationPayload
   | TChannelSubscribeNotificationPayload;

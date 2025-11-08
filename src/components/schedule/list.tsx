@@ -1,6 +1,5 @@
 import { SCHEDULES_TAG } from "@/constants/revalidate-tag";
 import { TProceedScheduleData } from "@/hooks/api/use-schedule";
-import { useScheduleStore } from "@/stores/schedule";
 import { TParsedClientContent } from "@/types/api/was";
 import { useScrollToTop } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,13 +18,12 @@ export default function ScheduleList({ proceedScheduleData }: Props) {
 
   const listRef = useRef<FlatList>(null);
 
-  const select = useScheduleStore((state) => state.select);
-
   const handleRefresh = async () => {
     setRefreshing(() => true);
     await queryClient.invalidateQueries({ queryKey: [SCHEDULES_TAG] });
     setRefreshing(() => false);
   };
+
   useScrollToTop(listRef);
 
   return (
