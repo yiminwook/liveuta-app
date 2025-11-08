@@ -1,5 +1,6 @@
 import * as Updates from "expo-updates";
 import { useCallback, useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
 
 export interface UpdateStatus {
   isDownloading: boolean;
@@ -76,9 +77,12 @@ export function useAppUpdate() {
 
   // 앱 시작 시 자동 업데이트 확인
   useEffect(() => {
-    if (!__DEV__ && !isCheckingUpdate) {
-      checkForUpdate();
-    }
+    // 우선 스플레쉬 스크린을 숨긴다 중요!
+    SplashScreen.hideAsync().then(() => {
+      if (!__DEV__ && !isCheckingUpdate) {
+        checkForUpdate();
+      }
+    });
   }, []);
 
   // 업데이트 완료 후 자동 재시작
