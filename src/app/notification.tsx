@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Toast } from "toastify-react-native";
 import { Ionicons } from "@expo/vector-icons";
+import dayjs from "@/libraries/dayjs";
 
 const getNotificationIcon = (type: TNotificationPayload["type"]) => {
   switch (type) {
@@ -144,7 +145,9 @@ export default function Notification() {
                       ]}
                     >
                       예정:{" "}
-                      {data.estimatedAt.format(t("dayjsScheduleTemplate"))}
+                      {dayjs(data.estimatedAt).format(
+                        t("dayjsScheduleTemplate")
+                      )}
                     </Text>
                   </View>
                   <View style={styles.timeRow}>
@@ -161,7 +164,8 @@ export default function Notification() {
                           : styles.timeTextDark,
                       ]}
                     >
-                      생성: {data.createdAt.format(t("dayjsScheduleTemplate"))}
+                      생성:{" "}
+                      {dayjs(data.createdAt).format(t("dayjsScheduleTemplate"))}
                     </Text>
                   </View>
                 </View>
