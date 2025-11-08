@@ -24,19 +24,11 @@ import {
 } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
 import ToastManager from "toastify-react-native";
-import * as TaskManager from "expo-task-manager";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  BACKGROUND_NOTIFICATION_TASK,
-  INTERACTED_NOTIFICATION_STORAGE_KEY,
-} from "@/constants/storage-key";
-
 import "react-native-reanimated";
 import "@/libraries/i18n";
 import "dayjs/locale/ko";
 import "dayjs/locale/ja";
 import "dayjs/locale/en";
-import { useEffect } from "react";
 
 /**
  * 앱이 실행중이 아닐때 알림을 클릭하면 호출되는 작업
@@ -95,23 +87,6 @@ export default Sentry.wrap(function RootLayout() {
 
   // 앱 업데이트 관리
   const { isShowUpdateModal, actions: updateActions } = useAppUpdate();
-
-  useEffect(() => {
-    const lastNotification = Notifications.getLastNotificationResponse();
-    console.log("[TEST] lastNotification root", lastNotification);
-
-    const listener = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        const lastNotification = Notifications.getLastNotificationResponse();
-        console.log("[TEST] lastNotification root 2", lastNotification);
-        console.log("[TEST] response", response);
-      }
-    );
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
 
   return (
     <NotificationProvider>

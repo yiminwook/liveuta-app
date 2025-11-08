@@ -1,3 +1,5 @@
+import type dayjs from "@/libraries/dayjs";
+
 export type Function<T> = (...args: any) => T;
 export type Promised<T extends Function<any>> = Awaited<ReturnType<T>>;
 
@@ -47,16 +49,16 @@ export type TStreamScheduleNotificationPayload = {
   type: "stream-schedule";
   videoId: string;
   url: string;
-  estimatedAt: number;
-  createdAt: number;
+  estimatedAt: dayjs.Dayjs;
+  createdAt: dayjs.Dayjs;
 };
 
 export type TChannelSubscribeNotificationPayload = {
   type: "channel-subscribe";
   channelId: string;
   url: string;
-  estimatedAt: number;
-  createdAt: number;
+  estimatedAt: dayjs.Dayjs;
+  createdAt: dayjs.Dayjs;
 };
 
 export type TNotificationPayload =

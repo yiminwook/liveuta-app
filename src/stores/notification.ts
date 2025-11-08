@@ -36,9 +36,9 @@ export const useLocalNotification = create<TLocalNotificationStore>()(
             data,
           },
           trigger: {
-            type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-            seconds: dayjs().diff(dayjs(data.estimatedAt), "second"),
-            repeats: false,
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+            date: data.estimatedAt.toDate(),
+            channelId: "default",
           },
         });
 

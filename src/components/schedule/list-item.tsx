@@ -131,8 +131,8 @@ export default function ScheduleListItem({ item }: Props) {
                 type: "stream-schedule",
                 videoId: item.videoId,
                 url: videoUrl,
-                estimatedAt: item.utcTime.unix(),
-                createdAt: dayjs().unix(),
+                estimatedAt: dayjs(item.utcTime),
+                createdAt: dayjs(),
               });
 
               Toast.success("알림이 설정되었습니다.");
