@@ -2,6 +2,7 @@ import { TNotificationPayload } from "@/types";
 import { create } from "zustand";
 import * as Notifications from "expo-notifications";
 import dayjs from "@/libraries/dayjs";
+import { NOTIFICATION_CHANNEL_ID } from "@/constants";
 
 export type TLocalNotificationState = {
   notifications: Notifications.NotificationRequest[];
@@ -38,7 +39,7 @@ export const useLocalNotification = create<TLocalNotificationStore>()(
           trigger: {
             type: Notifications.SchedulableTriggerInputTypes.DATE,
             date: data.estimatedAt,
-            channelId: "default",
+            channelId: NOTIFICATION_CHANNEL_ID,
           },
         });
 

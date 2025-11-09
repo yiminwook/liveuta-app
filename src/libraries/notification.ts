@@ -1,3 +1,4 @@
+import { NOTIFICATION_CHANNEL_ID } from "@/constants";
 import { TNotificationPayload } from "@/types";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
@@ -8,8 +9,8 @@ import { Linking, Platform } from "react-native";
 export const registerForPushNotificationsAsync = async () => {
   if (Platform.OS === "android") {
     // 안드로이드의 경우 알림을 보내기전 최소한 하나이상의 채널을 설정해야함.
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+    await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNEL_ID, {
+      name: "schedule-notification",
       importance: Notifications.AndroidImportance.MAX, // 중요도가 낮은 경우 기기에서 알림이 표시되지 않는 경우가 있다.
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#FFC1CC",

@@ -95,7 +95,8 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       package: val.package,
       googleServicesFile: "./google-services.json",
       permissions: [
-        "SCHEDULE_EXACT_ALARM", // Android 12+ (API 31+)에서 정확한 알림 스케줄링
+        // "RECEIVE_BOOT_COMPLETED", // 부팅 구독 권한
+        // "SCHEDULE_EXACT_ALARM", // Android 12+ (API 31+)에서 정확한 알림 스케줄링
         // "USE_EXACT_ALARM", // Android 13+에서 필요할 수 있음, 문서 확인필요
         // https://developer.android.com/about/versions/14/changes/schedule-exact-alarms?hl=ko
       ],
@@ -135,7 +136,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       [
         "expo-notifications",
         {
-          enableBackgroundRemoteNotifications: true,
+          enableBackgroundRemoteNotifications: true, // IOS) 알림 수신시 백그라운드에서 알림을 처리할지 여부
         },
       ],
     ],

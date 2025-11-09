@@ -15,3 +15,4 @@ export const FETCH_REVALIDATE_TIME = 30;
 export const SCHEDULE_CACHE_TIME = 3 * 60 * 1000;
 
 export const HOME_FILTER = ["live", "daily", "all"];
+export const NOTIFICATION_CHANNEL_ID = "default";
