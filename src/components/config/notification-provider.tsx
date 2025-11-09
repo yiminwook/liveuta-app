@@ -1,14 +1,13 @@
 import * as Notifications from "expo-notifications";
 import { createContext, use, useEffect, useState } from "react";
-import { registerForPushNotificationsAsync } from "@/libraries/notification";
-import { Href, router } from "expo-router";
-import { Alert, Linking } from "react-native";
-import { TNotificationPayload } from "@/types";
+import {
+  handleNotificationResponse,
+  registerForPushNotificationsAsync,
+} from "@/libraries/notification";
 import { useLocalNotification } from "@/stores/notification";
 
 interface TNotificationContext {
   expoPushToken: string | null;
-  // notification: Notifications.Notification | null;
   error: Error | null;
 }
 
@@ -32,25 +31,10 @@ export function NotificationProvider({
   children: React.ReactNode;
 }) {
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  //const [notification, setNotification] =
-  //   useState<Notifications.Notification | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(setExpoPushToken).catch(setError);
-
-    function redirect(notification: Notifications.Notification) {
-      const url = notification.request.content.data?.url as Href | undefined;
-      console.log("url", url);
-      if (url) {
-        Alert.alert("redirect to url", url.toString());
-        router.push(url); // threadc://@zerocho -> /@zerocho
-        // Linking.openURL(url);
-      }
-    }
-
-    const response = Notifications.getLastNotificationResponse();
-    console.log("getLastNotificationResponse", response);
 
     // 수신 리스너, foreground 상태에서 수신된 알림
     const notificationListener = Notifications.addNotificationReceivedListener(
@@ -76,31 +60,7 @@ export function NotificationProvider({
     // 응답 리스너, 사용자와 상호작용하는경우
     const responseListener =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        const payload = response.notification.request.content
-          .data as TNotificationPayload;
-        console.log("[TEST] addNotificationResponseReceivedListener", payload);
-
-        const lastNotification = Notifications.getLastNotificationResponse();
-        console.log("[TEST] lastNotification3", lastNotification);
-
-        console.log(
-          "addNotificationResponseReceivedListener",
-          JSON.stringify(response, null, 2),
-          JSON.stringify(response.notification.request.content.data, null, 2)
-        );
-
-        if (payload.type === "stream-schedule") {
-          Linking.openURL(payload.url); // 유투브앱 오픈
-          return;
-        }
-
-        if (payload.type === "channel-subscribe") {
-          Linking.openURL(payload.url); // 유투브앱 오픈
-          return;
-        }
-
-        // handle the notification response here
-        redirect(response.notification);
+        handleNotificationResponse(response);
       });
 
     return () => {

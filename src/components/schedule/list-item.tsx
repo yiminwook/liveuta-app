@@ -70,6 +70,14 @@ export default function ScheduleListItem({ item }: Props) {
         notification.content.data.videoId === item.videoId
     );
 
+    const estimateAt = item.utcTime;
+    const now = dayjs();
+
+    if (now.isAfter(estimateAt)) {
+      Alert.alert("알림 설정", "알림 설정 시간이 지났습니다.");
+      return;
+    }
+
     if (index > -1) {
       Alert.alert(
         "알림 설정",
@@ -99,8 +107,8 @@ export default function ScheduleListItem({ item }: Props) {
         type: "stream-schedule",
         videoId: item.videoId,
         url: videoUrl,
-        estimatedAt: dayjs(item.utcTime).toDate(),
-        createdAt: dayjs().toDate(),
+        estimatedAt: estimateAt.valueOf(),
+        createdAt: now.valueOf(),
       }
     );
 

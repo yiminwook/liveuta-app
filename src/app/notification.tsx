@@ -85,6 +85,7 @@ export default function Notification() {
         ) : (
           notifications.map((notification) => {
             const data = notification.content.data as TNotificationPayload;
+
             return (
               <View
                 key={notification.identifier}

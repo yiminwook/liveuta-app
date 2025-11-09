@@ -47,16 +47,16 @@ export type TStreamScheduleNotificationPayload = {
   type: "stream-schedule";
   videoId: string;
   url: string;
-  estimatedAt: Date;
-  createdAt: Date;
+  estimatedAt: number; // Date 객체를 응답으로 받을시 {}로 확인됌
+  createdAt: number;
 };
 
 export type TChannelSubscribeNotificationPayload = {
   type: "channel-subscribe";
   channelId: string;
   url: string;
-  estimatedAt: Date;
-  createdAt: Date;
+  estimatedAt: number;
+  createdAt: number;
 };
 
 /**

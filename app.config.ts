@@ -81,7 +81,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       supportsTablet: true,
       bundleIdentifier: val.bundleIdentifier,
       infoPlist: {
-        ITSAppUsesNonExemptEncryption: false,
+        ITSAppUsesNonExemptEncryption: false, // 미국수출법
       },
       icon: "./src/assets/images/ios.icon",
     },
@@ -94,6 +94,11 @@ const config = ({ config }: ConfigContext): ExpoConfig => {
       predictiveBackGestureEnabled: false,
       package: val.package,
       googleServicesFile: "./google-services.json",
+      permissions: [
+        "SCHEDULE_EXACT_ALARM", // Android 12+ (API 31+)에서 정확한 알림 스케줄링
+        // "USE_EXACT_ALARM", // Android 13+에서 필요할 수 있음, 문서 확인필요
+        // https://developer.android.com/about/versions/14/changes/schedule-exact-alarms?hl=ko
+      ],
     },
     plugins: [
       "expo-router",

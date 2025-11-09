@@ -1,7 +1,9 @@
+import { TNotificationPayload } from "@/types";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import { Href, router } from "expo-router";
+import { Linking, Platform } from "react-native";
 
 export const registerForPushNotificationsAsync = async () => {
   if (Platform.OS === "android") {
@@ -56,5 +58,27 @@ export const registerForPushNotificationsAsync = async () => {
     }
   } else {
     throw new Error("Must use physical device for Push Notifications");
+  }
+};
+
+export const handleNotificationResponse = (
+  response: Notifications.NotificationResponse
+) => {
+  const notification = response.notification;
+  const payload = notification.request.content.data as TNotificationPayload;
+  const url = payload.url;
+
+  if (payload.type === "stream-schedule") {
+    Linking.openURL(payload.url); // 유투브앱 오픈
+    return;
+  }
+
+  if (payload.type === "channel-subscribe") {
+    Linking.openURL(payload.url); // 유투브앱 오픈
+    return;
+  }
+
+  if (url) {
+    router.push(url as Href);
   }
 };

@@ -1,23 +1,23 @@
 import AppNavigator from "@/components/config/app-navigator";
-import { memo, useEffect, useLayoutEffect } from "react";
-import { useNotification } from "./notification-provider";
+import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
 import { useMetaData } from "@/hooks/api/use-meta-data";
+import dayjs from "@/libraries/dayjs";
+import { handleNotificationResponse } from "@/libraries/notification";
+import { useApp } from "@/stores/app";
+import { useLocalNotification } from "@/stores/notification";
+import * as Notifications from "expo-notifications";
+import * as Updates from "expo-updates";
+import { memo, useEffect, useLayoutEffect } from "react";
 import {
   ActivityIndicator,
+  AppState,
+  Linking,
+  Platform,
   Text,
   TouchableOpacity,
   View,
-  Platform,
-  Linking,
-  AppState,
 } from "react-native";
-import * as Updates from "expo-updates";
-import { SHEET_COLOR, TINT_COLOR } from "@/constants/theme";
-import * as Notifications from "expo-notifications";
-import { TNotificationPayload } from "@/types";
-import { useLocalNotification } from "@/stores/notification";
-import { useApp } from "@/stores/app";
-import dayjs from "@/libraries/dayjs";
+import { useNotification } from "./notification-provider";
 
 export default memo(function App() {
   const { expoPushToken } = useNotification();
@@ -47,40 +47,18 @@ export default memo(function App() {
 
   useEffect(() => {
     if (!lastNotification) return;
-
-    const notification = lastNotification.notification;
-    const isNotificationResponse = "actionIdentifier" in notification;
-    if (!isNotificationResponse) return;
-
-    const payload = notification.request.content.data as TNotificationPayload;
-
-    if (payload.type === "stream-schedule") {
-      Linking.openURL(payload.url); // 유투브앱 오픈
-      return;
-    }
-
-    if (payload.type === "channel-subscribe") {
-      Linking.openURL(payload.url); // 유투브앱 오픈
-      return;
-    }
+    handleNotificationResponse(lastNotification);
   }, [lastNotification]);
 
   useEffect(() => {
     // 앱 시작 시 동기화
     useLocalNotification.getState().actions.syncNotifications();
 
-    setImmediate(() => {
-      const lastNotification = Notifications.getLastNotificationResponse();
-      console.log("[TEST] lastNotification1", lastNotification);
-    });
-
     // 포그라운드 복귀 시 동기화
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       console.log("[TEST] AppState.addEventListener", nextAppState);
       if (nextAppState === "active") {
-        const lastNotification = Notifications.getLastNotificationResponse();
         useLocalNotification.getState().actions.syncNotifications();
-        console.log("[TEST] lastNotification2", lastNotification);
       }
     });
 
